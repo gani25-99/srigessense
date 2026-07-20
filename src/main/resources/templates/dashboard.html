@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>My Account</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+body{
+    background:#f1f3f6;
+}
+
+.navbar{
+    background:#2874f0;
+}
+
+.left-menu{
+
+    background:white;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+
+}
+
+.left-menu a{
+
+    display:block;
+    padding:12px;
+    color:#333;
+    text-decoration:none;
+    border-bottom:1px solid #eee;
+
+}
+
+.left-menu a:hover{
+
+    background:#2874f0;
+    color:white;
+    border-radius:5px;
+
+}
+
+.profile-card{
+
+    background:white;
+    border-radius:10px;
+    padding:25px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+
+}
+
+.info-card{
+
+    background:white;
+    border-radius:10px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+
+}
+
+.info-card i{
+
+    font-size:35px;
+    color:#2874f0;
+    margin-bottom:10px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+
+<div class="container">
+
+<a class="navbar-brand" href="/home">
+
+<b>SRIG ESSENSE</b>
+
+</a>
+
+<div>
+
+<a href="/home" class="btn btn-light">
+
+🏠 Home
+
+</a>
+
+</div>
+
+</div>
+
+</nav>
+
+<div class="container mt-4">
+
+<div class="row">
+
+<div class="col-md-3">
+
+<div class="left-menu">
+
+<h5 class="mb-3">
+
+<i class="fa-solid fa-user"></i>
+
+My Account
+
+</h5>
+
+<a href="/dashboard">
+
+🏠 Dashboard
+
+</a>
+
+<a href="/my-orders">📦 My Orders</a>
+
+<a href="/wishlist">
+
+❤️ Wishlist
+
+</a>
+
+<a href="/cart">
+
+🛒 Cart
+
+</a>
+
+<a href="/contact">
+
+📞 Contact Us
+
+</a>
+
+<a href="/logout">
+
+🚪 Logout
+
+</a>
+
+</div>
+
+</div>
+
+<div class="col-md-9">
+
+<div class="profile-card mb-4">
+
+    <div class="d-flex align-items-center">
+
+        <div class="me-4">
+
+            <img th:if="${user.profileImage != null and !#strings.isEmpty(user.profileImage)}"
+                 th:src="@{'/images/profile/' + ${user.profileImage}}"
+                 style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #2874f0;">
+
+            <img th:if="${user.profileImage == null or #strings.isEmpty(user.profileImage)}"
+                 th:src="@{/images/profile/default.png}"
+                 style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #2874f0;">
+
+        </div>
+
+        <div>
+
+            <h3>
+                Hello,
+                <span th:text="${user.name}"></span> 👋
+            </h3>
+
+            <p>
+                <strong>Mobile:</strong>
+                <span th:text="${user.mobile}"></span>
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                <span th:text="${user.email}"></span>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-4 mb-3">
+
+<div class="info-card">
+
+<i class="fa-solid fa-box"></i>
+
+<h5>Orders</h5>
+
+<p>View all orders</p>
+
+<a href="/my-orders" class="btn btn-primary btn-sm">Open</a>
+</div>
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<div class="info-card">
+
+<i class="fa-solid fa-heart"></i>
+
+<h5>Wishlist</h5>
+
+<p>Your favourite items</p>
+
+<a href="/wishlist"
+class="btn btn-danger btn-sm">
+
+Open
+
+</a>
+
+</div>
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<div class="info-card">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+<h5>Cart</h5>
+
+<p>Items in cart</p>
+
+<a href="/cart"
+class="btn btn-success btn-sm">
+
+Open
+
+</a>
+
+</div>
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<div class="info-card">
+
+<i class="fa-solid fa-headset"></i>
+
+<h5>Support</h5>
+
+<p>Need help?</p>
+
+<a href="/contact"
+class="btn btn-warning btn-sm">
+
+Contact
+
+</a>
+
+</div>
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<div class="info-card">
+
+<i class="fa-solid fa-lock"></i>
+
+
+<h5>My Profile</h5>
+
+<p>View & Update Profile</p>
+
+<a href="/profile"
+class="btn btn-secondary btn-sm">
+
+Open
+
+</a>
+</div>
+
+</div>
+
+<div class="col-md-4 mb-3">
+
+<div class="info-card">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+<h5>Logout</h5>
+
+<p>Exit account</p>
+
+<a href="/logout"
+class="btn btn-dark btn-sm">
+
+Logout
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>
