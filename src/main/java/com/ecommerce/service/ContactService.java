@@ -15,77 +15,60 @@ public class ContactService {
     @Autowired
     private ContactRepository contactRepository;
 
-    // Save Customer Message
     public void saveMessage(ContactMessage message) {
-
         message.setStatus("OPEN");
         message.setCreatedAt(LocalDateTime.now());
-
         contactRepository.save(message);
     }
 
-    // Get All Messages
     public List<ContactMessage> getAllMessages() {
-
         return contactRepository.findAll();
     }
 
-    // Get Message By Id
     public ContactMessage getMessageById(Long id) {
-
         return contactRepository.findById(id).orElse(null);
     }
 
-    // Search Messages
     public List<ContactMessage> searchMessages(String keyword) {
-
         return contactRepository
                 .findByNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrSubjectContainingIgnoreCase(
-                        keyword,
-                        keyword,
-                        keyword);
+                        keyword, keyword, keyword);
     }
 
-    // Mark as Resolved
     public void markResolved(Long id) {
 
         ContactMessage message = contactRepository.findById(id).orElse(null);
 
         if (message != null) {
-
             message.setStatus("RESOLVED");
-
             contactRepository.save(message);
         }
     }
 
-    // Delete Message
     public void deleteMessage(Long id) {
-
         contactRepository.deleteById(id);
     }
-    // Total Messages
-public long getTotalMessages() {
 
-    return contactRepository.count();
-}
+    public long getTotalMessages() {
+        return contactRepository.count();
+    }
 
-// Open Messages
-public long getOpenMessages() {
+    public long getOpenMessages() {
+        return contactRepository.findAll()
+                .stream()
+                .filter(m -> "OPEN".equals(m.getStatus()))
+                .count();
+    }
 
-    return contactRepository.findAll()
-            .stream()
-            .filter(m -> "OPEN".equals(m.getStatus()))
-            .count();
-}
+    public long getResolvedMessages() {
+        return contactRepository.findAll()
+                .stream()
+                .filter(m -> "RESOLVED".equals(m.getStatus()))
+                .count();
+    }
 
-// Resolved Messages
-public long getResolvedMessages() {
-
-    return contactRepository.findAll()
-            .stream()
-            .filter(m -> "RESOLVED".equals(m.getStatus()))
-            .count();
-}
-
+    // New Method
+    public List<ContactMessage> getMyComplaints(String email) {
+        return contactRepository.findByEmail(email);
+    }
 }

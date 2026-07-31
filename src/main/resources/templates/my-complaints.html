@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>My Complaints</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    margin:40px;
+}
+
+h2{
+    color:#333;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+table,th,td{
+    border:1px solid #ccc;
+}
+
+th,td{
+    padding:10px;
+    text-align:left;
+}
+
+th{
+    background:#007bff;
+    color:white;
+}
+
+.open{
+    color:orange;
+    font-weight:bold;
+}
+
+.resolved{
+    color:green;
+    font-weight:bold;
+}
+
+.no-data{
+    color:red;
+    margin-top:20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>My Complaints</h2>
+
+<form th:action="@{/my-complaints}" method="get">
+    <label>Email:</label>
+    <input type="email" name="email" th:value="${email}" required>
+    <button type="submit">Search</button>
+</form>
+
+<table th:if="${complaints != null and !complaints.isEmpty()}">
+
+<tr>
+    <th>ID</th>
+    <th>Subject</th>
+    <th>Message</th>
+    <th>Status</th>
+    <th>Created At</th>
+</tr>
+
+<tr th:each="c : ${complaints}">
+    <td th:text="${c.id}"></td>
+    <td th:text="${c.subject}"></td>
+    <td th:text="${c.message}"></td>
+
+    <td>
+        <span th:if="${c.status == 'OPEN'}" class="open">OPEN</span>
+        <span th:if="${c.status == 'RESOLVED'}" class="resolved">RESOLVED</span>
+    </td>
+
+    <td th:text="${c.createdAt}"></td>
+</tr>
+
+</table>
+
+<p class="no-data"
+   th:if="${complaints != null and complaints.isEmpty()}">
+    No complaints found for this email.
+</p>
+
+</body>
+</html>
