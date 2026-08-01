@@ -1,237 +1,109 @@
-// ===============================
-// Show / Hide Password
-// ===============================
+// ==========================
+// Password Show / Hide
+// ==========================
 
-function togglePassword(id, icon){
+function togglePassword(id, icon) {
 
     const input = document.getElementById(id);
 
-    if(input.type === "password"){
+    if (input.type === "password") {
 
         input.type = "text";
 
         icon.classList.remove("fa-eye");
-
         icon.classList.add("fa-eye-slash");
 
-    }else{
+    } else {
 
         input.type = "password";
 
         icon.classList.remove("fa-eye-slash");
-
         icon.classList.add("fa-eye");
 
     }
 
 }
 
-// ===============================
+// ==========================
 // Password Strength
-// ===============================
+// ==========================
 
 const password = document.getElementById("password");
 
-if(password){
+const strengthBar = document.getElementById("strengthBar");
 
-password.addEventListener("keyup",function(){
+const strengthText = document.getElementById("strengthText");
 
-    let value=password.value;
+password.addEventListener("input", function () {
 
-    let strength=0;
+    let value = password.value;
 
-    if(value.length>=8) strength++;
+    let strength = 0;
 
-    if(/[A-Z]/.test(value)) strength++;
+    if (value.length >= 8) strength++;
 
-    if(/[a-z]/.test(value)) strength++;
+    if (/[A-Z]/.test(value)) strength++;
 
-    if(/[0-9]/.test(value)) strength++;
+    if (/[0-9]/.test(value)) strength++;
 
-    if(/[^A-Za-z0-9]/.test(value)) strength++;
+    if (/[^A-Za-z0-9]/.test(value)) strength++;
 
-    const bar=document.getElementById("strengthBar");
+    switch (strength) {
 
-    const text=document.getElementById("strengthText");
-
-    switch(strength){
-
+        case 0:
         case 1:
-
-            bar.style.width="20%";
-            bar.style.background="#f44336";
-            text.innerHTML="Weak";
+            strengthBar.style.width = "25%";
+            strengthBar.style.background = "red";
+            strengthText.innerHTML = "Weak Password";
             break;
 
         case 2:
-
-            bar.style.width="40%";
-            bar.style.background="#ff9800";
-            text.innerHTML="Fair";
+            strengthBar.style.width = "50%";
+            strengthBar.style.background = "orange";
+            strengthText.innerHTML = "Medium Password";
             break;
 
         case 3:
-
-            bar.style.width="60%";
-            bar.style.background="#ffc107";
-            text.innerHTML="Good";
+            strengthBar.style.width = "75%";
+            strengthBar.style.background = "#0d6efd";
+            strengthText.innerHTML = "Good Password";
             break;
 
         case 4:
-
-            bar.style.width="80%";
-            bar.style.background="#4caf50";
-            text.innerHTML="Strong";
+            strengthBar.style.width = "100%";
+            strengthBar.style.background = "green";
+            strengthText.innerHTML = "Strong Password";
             break;
-
-        case 5:
-
-            bar.style.width="100%";
-            bar.style.background="#2e7d32";
-            text.innerHTML="Very Strong";
-            break;
-
-        default:
-
-            bar.style.width="0";
-            text.innerHTML="Password Strength";
-
     }
 
 });
 
-}
-
-// ===============================
+// ==========================
 // Confirm Password Validation
-// ===============================
+// ==========================
 
-const form=document.querySelector("form");
+document.querySelector("form").addEventListener("submit", function (e) {
 
-if(form){
+    const pwd = document.getElementById("password").value;
 
-form.addEventListener("submit",function(e){
+    const confirmPwd = document.getElementById("confirmPassword").value;
 
-    let pass=document.getElementById("password").value;
-
-    let confirm=document.getElementById("confirmPassword").value;
-
-    if(pass!==confirm){
+    if (pwd !== confirmPwd) {
 
         e.preventDefault();
 
-        showToast("Passwords do not match","error");
+        alert("Password and Confirm Password do not match.");
 
         return;
 
     }
 
-    showLoader();
+    if (pwd.length < 8) {
 
-});
+        e.preventDefault();
 
-}
-
-// ===============================
-// Mobile Validation
-// ===============================
-
-const mobile=document.querySelector("input[name='mobile']");
-
-if(mobile){
-
-mobile.addEventListener("input",function(){
-
-    this.value=this.value.replace(/\D/g,'');
-
-    if(this.value.length>10){
-
-        this.value=this.value.slice(0,10);
+        alert("Password must contain at least 8 characters.");
 
     }
 
 });
-
-}
-
-// ===============================
-// Email Validation
-// ===============================
-
-const email=document.querySelector("input[name='email']");
-
-if(email){
-
-email.addEventListener("blur",function(){
-
-    if(this.value==="") return;
-
-    let regex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if(!regex.test(this.value)){
-
-        showToast("Invalid Email Address","error");
-
-    }
-
-});
-
-}
-
-// ===============================
-// Loader
-// ===============================
-
-function showLoader(){
-
-    let loader=document.querySelector(".loader");
-
-    if(loader){
-
-        loader.style.display="block";
-
-    }
-
-}
-
-function hideLoader(){
-
-    let loader=document.querySelector(".loader");
-
-    if(loader){
-
-        loader.style.display="none";
-
-    }
-
-}
-
-// ===============================
-// Toast
-// ===============================
-
-function showToast(message,type){
-
-    let toast=document.querySelector(".toast");
-
-    if(!toast){
-
-        toast=document.createElement("div");
-
-        toast.className="toast";
-
-        document.body.appendChild(toast);
-
-    }
-
-    toast.innerHTML=message;
-
-    toast.className="toast show "+type;
-
-    setTimeout(function(){
-
-        toast.className="toast";
-
-    },3000);
-
-}
