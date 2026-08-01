@@ -3,6 +3,8 @@ package com.ecommerce.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.ecommerce.entity.Category;
 import com.ecommerce.entity.Product;
@@ -28,21 +31,25 @@ public class ProductController {
     @Autowired
     private FileUploadService fileUploadService;
 
+    // Get All Products
     @GetMapping
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
+    // Get Product By ID
     @GetMapping("/{id}")
     public Product getProduct(@PathVariable Long id) {
         return productService.getProduct(id);
     }
 
+    // Save Product (JSON)
     @PostMapping
     public Product save(@RequestBody Product product) {
         return productService.save(product);
     }
 
+    // Upload Product With Image
     @PostMapping("/upload")
     public Product uploadProduct(
             @RequestParam("name") String name,
@@ -69,33 +76,41 @@ public class ProductController {
         return productService.save(product);
     }
 
+    // Update Product
     @PutMapping("/{id}")
     public Product update(@PathVariable Long id,
                           @RequestBody Product product) {
+
         return productService.update(id, product);
     }
-@DeleteMapping("/{id}")
-public String delete(@PathVariable Long id) {
 
-    try {
+    // Delete Product
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id) {
 
-        productService.delete(id);
+        try {
 
-        return "Product Deleted Successfully";
+            productService.delete(id);
 
-    } catch (Exception e) {
+            return "Product Deleted Successfully";
 
-        throw new org.springframework.web.server.ResponseStatusException(
-                org.springframework.http.HttpStatus.BAD_REQUEST,
-                "Cannot delete product. Remove it from Cart, Wishlist and Orders first."
-        );
+        } catch (Exception e) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Cannot delete product. Remove it from Cart, Wishlist and Orders first."
+            );
+
+        }
 
     }
 
-}
-
+    // Search Products
     @GetMapping("/search")
     public List<Product> search(@RequestParam String keyword) {
+
         return productService.search(keyword);
+
     }
+
 }
