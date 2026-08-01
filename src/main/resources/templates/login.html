@@ -4,12 +4,14 @@
 <head>
 
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Login | SRIG ESSENSE</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
           rel="stylesheet">
 
     <link rel="stylesheet" th:href="@{/css/login.css}">
@@ -18,33 +20,48 @@
 
 <body>
 
-<div class="overlay">
+<div class="login-container">
 
-    <div class="login-box shadow-lg">
+    <!-- LEFT PANEL -->
 
-        <!-- Left Banner -->
+    <div class="left-panel">
 
-        <div class="left-panel">
+        <div class="overlay">
 
-            <img src="/images/login-banner.jpg"
-                 alt="Banner">
+            <h1>SRIG ESSENSE</h1>
+
+            <h4>Own Your Style</h4>
+
+            <p>
+                Discover premium fashion crafted
+                for modern lifestyles.
+            </p>
 
         </div>
 
-        <!-- Right Login -->
+    </div>
 
-        <div class="right-panel">
+    <!-- RIGHT PANEL -->
+
+    <div class="right-panel">
+
+        <div class="login-card">
 
             <div class="text-center mb-4">
 
                 <img src="/images/logo3.png"
-                     class="logo">
+                     class="logo"
+                     alt="Logo">
 
-                <h2>LOGIN OR SIGN UP</h2>
+                <h2 class="mt-3">
+
+                    Welcome Back
+
+                </h2>
 
                 <p class="text-muted">
 
-                    Unlock coupons, profile and much more
+                    Sign in to continue shopping
 
                 </p>
 
@@ -52,68 +69,92 @@
 
             <!-- Tabs -->
 
-            <div class="d-flex mb-4">
-
-                <button id="mobileTab"
-                        class="tab-btn active">
-
-                    Mobile OTP
-
-                </button>
+            <div class="tab-buttons">
 
                 <button id="emailTab"
-                        class="tab-btn">
+                        class="tab-btn active">
 
                     Email Login
 
                 </button>
 
-            </div>
+                <button id="mobileTab"
+                        class="tab-btn">
 
-            <!-- Mobile Login -->
+                    Mobile OTP
 
-            <div id="mobileLogin">
-
-                <form action="/login/send-otp" method="post">
-
-                    <input
-                            type="text"
-                            name="mobile"
-                            maxlength="10"
-                            class="form-control mb-3"
-                            placeholder="+91 Mobile Number"
-                            required>
-
-                    <button
-                            class="btn btn-dark w-100">
-
-                        SEND OTP
-
-                    </button>
-
-                </form>
+                </button>
 
             </div>
 
-            <!-- Email Login -->
+            <!-- EMAIL LOGIN -->
 
-            <div id="emailLogin" style="display:none;">
+            <div id="emailLogin">
 
-                <form action="/login/email" method="post">
+                <form action="/login/email"
+                      method="post">
 
-                    <input
-                            type="email"
-                            name="email"
-                            class="form-control mb-3"
-                            placeholder="Email"
-                            required>
+                    <div class="input-group mb-3">
 
-                    <input
-                            type="password"
-                            name="password"
-                            class="form-control mb-3"
-                            placeholder="Password"
-                            required>
+                        <span class="input-group-text">
+
+                            <i class="bi bi-envelope"></i>
+
+                        </span>
+
+                        <input
+                                type="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="Email Address"
+                                required>
+
+                    </div>
+
+                    <div class="input-group mb-3">
+
+                        <span class="input-group-text">
+
+                            <i class="bi bi-lock"></i>
+
+                        </span>
+
+                        <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Password"
+                                required>
+
+                        <span class="input-group-text"
+                              onclick="togglePassword()"
+                              style="cursor:pointer;">
+
+                            <i id="eye"
+                               class="bi bi-eye"></i>
+
+                        </span>
+
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3">
+
+                        <div>
+
+                            <input type="checkbox">
+
+                            Remember Me
+
+                        </div>
+
+                        <a href="/forgot-password">
+
+                            Forgot Password?
+
+                        </a>
+
+                    </div>
 
                     <button
                             class="btn btn-dark w-100">
@@ -126,13 +167,50 @@
 
             </div>
 
+            <!-- MOBILE LOGIN -->
+
+            <div id="mobileLogin"
+                 style="display:none;">
+
+                <form action="/login/send-otp"
+                      method="post">
+
+                    <div class="input-group mb-3">
+
+                        <span class="input-group-text">
+
+                            <i class="bi bi-phone"></i>
+
+                        </span>
+
+                        <input
+                                type="text"
+                                name="mobile"
+                                maxlength="10"
+                                class="form-control"
+                                placeholder="Mobile Number"
+                                required>
+
+                    </div>
+
+                    <button
+                            class="btn btn-dark w-100">
+
+                        SEND OTP
+
+                    </button>
+
+                </form>
+
+            </div>
+
             <div class="text-center mt-4">
 
-                New User?
+                New to SRIG ESSENSE?
 
                 <a href="/register">
 
-                    Register
+                    Create Account →
 
                 </a>
 
@@ -144,7 +222,63 @@
 
 </div>
 
-<script th:src="@{/js/login.js}"></script>
+<script>
+
+const emailTab=document.getElementById("emailTab");
+
+const mobileTab=document.getElementById("mobileTab");
+
+const emailLogin=document.getElementById("emailLogin");
+
+const mobileLogin=document.getElementById("mobileLogin");
+
+emailTab.onclick=function(){
+
+emailLogin.style.display="block";
+
+mobileLogin.style.display="none";
+
+emailTab.classList.add("active");
+
+mobileTab.classList.remove("active");
+
+}
+
+mobileTab.onclick=function(){
+
+emailLogin.style.display="none";
+
+mobileLogin.style.display="block";
+
+mobileTab.classList.add("active");
+
+emailTab.classList.remove("active");
+
+}
+
+function togglePassword(){
+
+const pwd=document.getElementById("password");
+
+const eye=document.getElementById("eye");
+
+if(pwd.type==="password"){
+
+pwd.type="text";
+
+eye.className="bi bi-eye-slash";
+
+}else{
+
+pwd.type="password";
+
+eye.className="bi bi-eye";
+
+}
+
+}
+
+</script>
 
 </body>
 
