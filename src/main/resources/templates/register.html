@@ -5,145 +5,294 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Create Account | SRIG ESSENSE</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet">
 
-    <link rel="stylesheet" th:href="@{/css/register.css}">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+            rel="stylesheet">
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link
+            rel="stylesheet"
+            th:href="@{/css/register.css}">
 
 </head>
 
 <body>
 
-<div class="overlay">
+<div class="register-container">
 
-    <div class="register-card shadow-lg">
+    <!-- LEFT PANEL -->
 
-        <div class="text-center mb-4">
+    <div class="left-panel">
 
-            <img src="/images/logo3.png"
-                 class="logo">
+        <div class="overlay">
 
-            <h2>SRIG ESSENSE</h2>
+            <img
+                    src="/images/logo3.png"
+                    class="brand-logo"
+                    alt="Logo">
 
-            <p class="text-muted">
+            <h1>
 
-                Create Your Account
+                SRIG ESSENSE
+
+            </h1>
+
+            <h4>
+
+                Own Your Style
+
+            </h4>
+
+            <p>
+
+                Premium Fashion
+                Crafted For Modern Lifestyle
 
             </p>
 
         </div>
 
-        <form action="/register/send-otp" method="post">
+    </div>
 
-            <div class="input-box">
+    <!-- RIGHT PANEL -->
 
-                <i class="fa-solid fa-envelope"></i>
+    <div class="right-panel">
 
-                <input
-                        type="email"
-                        name="email"
-                        placeholder="Email (Optional)">
+        <div class="register-card">
 
-            </div>
+            <div class="text-center mb-4">
 
-            <div class="input-box">
+                <img
+                        src="/images/logo3.png"
+                        class="logo">
 
-                <i class="fa-solid fa-mobile-screen-button"></i>
+                <h2>
 
-                <input
-                        type="text"
-                        name="mobile"
-                        maxlength="10"
-                        placeholder="Mobile Number"
-                        required>
+                    Create Account
 
-            </div>
+                </h2>
 
-            <div class="input-box">
+                <p class="text-muted">
 
-                <i class="fa-solid fa-lock"></i>
+                    Join the SRIG ESSENSE Family
 
-                <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Password"
-                        required>
-
-                <i class="fa-solid fa-eye toggle-password"
-                   onclick="togglePassword('password',this)"></i>
+                </p>
 
             </div>
 
-            <div class="input-box">
+            <form
+                    action="/register/send-otp"
+                    method="post">
 
-                <i class="fa-solid fa-lock"></i>
+                <!-- EMAIL -->
 
-                <input
-                        type="password"
-                        id="confirmPassword"
-                        placeholder="Confirm Password"
-                        required>
+                <div class="input-box">
 
-                <i class="fa-solid fa-eye toggle-password"
-                   onclick="togglePassword('confirmPassword',this)"></i>
-
-            </div>
-
-            <div class="strength">
-
-                <div id="strengthBar"></div>
-
-            </div>
-
-            <small id="strengthText">
-
-                Password Strength
-
-            </small>
-
-            <div class="terms">
-
-                <label>
+                    <i class="fa-solid fa-envelope"></i>
 
                     <input
-                            type="checkbox"
+
+                            type="email"
+
+                            name="email"
+
+                            placeholder="Email Address"
+
                             required>
 
-                    I agree to the
+                </div>
 
-                    <a href="#">Terms & Conditions</a>
+                <!-- MOBILE -->
 
-                </label>
+                <div class="input-box">
+
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+
+                    <input
+
+                            type="text"
+
+                            name="mobile"
+
+                            maxlength="10"
+
+                            placeholder="Mobile Number"
+
+                            required>
+
+                </div>
+
+                <!-- PASSWORD -->
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+
+                            type="password"
+
+                            id="password"
+
+                            name="password"
+
+                            placeholder="Password"
+
+                            required>
+
+                    <i
+
+                            class="fa-solid fa-eye toggle-password"
+
+                            onclick="togglePassword('password',this)">
+
+                    </i>
+
+                </div>
+                                <!-- CONFIRM PASSWORD -->
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+
+                            type="password"
+
+                            id="confirmPassword"
+
+                            name="confirmPassword"
+
+                            placeholder="Confirm Password"
+
+                            required>
+
+                    <i
+
+                            class="fa-solid fa-eye toggle-password"
+
+                            onclick="togglePassword('confirmPassword',this)">
+
+                    </i>
+
+                </div>
+
+                <!-- PASSWORD STRENGTH -->
+
+                <div class="strength">
+
+                    <div id="strengthBar"></div>
+
+                </div>
+
+                <small id="strengthText">
+
+                    Password Strength
+
+                </small>
+
+                <!-- TERMS -->
+
+                <div class="terms">
+
+                    <label>
+
+                        <input
+
+                                type="checkbox"
+
+                                required>
+
+                        I agree to the
+
+                        <a href="#">
+
+                            Terms & Conditions
+
+                        </a>
+
+                    </label>
+
+                </div>
+
+                <!-- BUTTON -->
+
+                <button
+
+                        type="submit"
+
+                        class="register-btn">
+
+                    CREATE ACCOUNT →
+
+                </button>
+
+            </form>
+
+            <div class="divider">
+
+                <span>
+
+                    OR
+
+                </span>
 
             </div>
 
-            <button
-                    type="submit"
-                    class="register-btn">
+            <div class="social-login">
 
-                CREATE ACCOUNT
+                <button
 
-            </button>
+                        type="button"
 
-        </form>
+                        class="google-btn">
 
-        <div class="login-link">
+                    <i class="fa-brands fa-google"></i>
 
-            Already have an account?
+                    Continue with Google
 
-            <a href="/login">
+                </button>
 
-                LOGIN
+            </div>
 
-            </a>
+            <div class="login-link">
+
+                Already have an account?
+
+                <a href="/login">
+
+                    Sign In →
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+                <!-- Footer -->
+
+            <div class="footer-text">
+
+                <small>
+
+                    © 2026 SRIG ESSENSE. All Rights Reserved.
+
+                </small>
+
+            </div>
 
         </div>
 
