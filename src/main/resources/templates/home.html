@@ -4,109 +4,20 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>SRIG ESSENSE</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
 
-    <style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          rel="stylesheet">
 
-        body{
-            background:#f1f3f6;
-            font-family:Arial,Helvetica,sans-serif;
-        }
-
-        /* Navbar */
-
-        .navbar{
-            background:#2874f0 !important;
-        }
-
-        .navbar-brand{
-            font-weight:bold;
-            font-size:24px;
-        }
-
-        .logo{
-            width:45px;
-            height:45px;
-            border-radius:50%;
-            margin-right:10px;
-        }
-
-        /* Product Cards */
-
-        .card{
-            border:none;
-            border-radius:12px;
-            overflow:hidden;
-            transition:.3s;
-            height:100%;
-        }
-
-        .card:hover{
-            transform:translateY(-5px);
-            box-shadow:0 8px 20px rgba(0,0,0,.2);
-        }
-
-        .card img{
-            height:250px;
-            object-fit:cover;
-        }
-
-        .card-body h5{
-            font-weight:bold;
-        }
-
-        .card-body p{
-            font-size:14px;
-            color:#666;
-            min-height:45px;
-        }
-
-        .btn{
-            border-radius:8px;
-        }
-
-        footer{
-            margin-top:60px;
-        }
-
-        /* Mobile */
-
-        @media(max-width:768px){
-
-            .navbar-brand{
-                font-size:18px;
-            }
-
-            .logo{
-                width:35px;
-                height:35px;
-            }
-
-            .card img{
-                height:180px;
-            }
-
-            h2{
-                font-size:24px;
-            }
-
-            .navbar form{
-                margin-top:15px;
-            }
-
-            .navbar .btn{
-                margin-top:8px;
-                width:100%;
-            }
-
-        }
-
-    </style>
+    <link rel="stylesheet"
+          th:href="@{/css/home.css}">
 
 </head>
 
@@ -114,68 +25,93 @@
 
 <!-- ================= NAVBAR ================= -->
 
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
 
     <div class="container">
 
-        <a class="navbar-brand d-flex align-items-center" href="/home">
+        <a class="navbar-brand d-flex align-items-center"
+           href="/home">
 
             <img src="/images/logo3.png"
-                 class="logo"
-                 alt="Logo">
+                 class="logo">
 
-            SRIG ESSENSE
+            <span class="ms-2 fw-bold">
+
+                SRIG ESSENSE
+
+            </span>
 
         </a>
 
         <button class="navbar-toggler"
-                type="button"
                 data-bs-toggle="collapse"
-                data-bs-target="#navbarMenu">
+                data-bs-target="#menu">
 
             <span class="navbar-toggler-icon"></span>
 
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarMenu">
+        <div class="collapse navbar-collapse"
+             id="menu">
 
-            <!-- Search -->
+            <ul class="navbar-nav ms-auto">
 
-            <form class="d-flex ms-lg-auto my-3 my-lg-0"
-                  action="/search"
-                  method="get">
+                <li class="nav-item">
 
-                <input type="text"
-                       name="keyword"
-                       class="form-control me-2"
-                       placeholder="Search Products">
+                    <a class="nav-link"
+                       href="/home">
 
-                <button class="btn btn-warning">
-                    Search
-                </button>
+                        Home
 
-            </form>
+                    </a>
 
-            <!-- Buttons -->
+                </li>
 
-            <div class="ms-lg-3">
+                <li class="nav-item">
 
-                <a href="/wishlist"
-                   class="btn btn-outline-light me-lg-2">
-                    ❤️ Wishlist
-                </a>
+                    <a class="nav-link"
+                       href="/products">
 
-                <a href="/cart"
-                   class="btn btn-warning me-lg-2">
-                    🛒 Cart
-                </a>
+                        Products
 
-                <a href="/dashboard"
-                   class="btn btn-light">
-                    👤 Dashboard
-                </a>
+                    </a>
 
-            </div>
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="/wishlist">
+
+                        Wishlist
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="/cart">
+
+                        Cart
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="/dashboard">
+
+                        Dashboard
+
+                    </a>
+
+                </li>
+
+            </ul>
 
         </div>
 
@@ -183,104 +119,208 @@
 
 </nav>
 
-<!-- ================= CATEGORY ================= -->
+<!-- ================= HERO ================= -->
 
-<div class="container mt-4">
+<section class="hero">
 
-    <h4 class="mb-3">
+    <div class="container">
 
-        Shop By Category
+        <div class="row align-items-center">
 
-    </h4>
+            <div class="col-lg-6">
 
-    <div class="d-flex flex-wrap gap-2">
+                <h1>
 
-        <a href="/home"
-           class="btn btn-dark">
-            All
-        </a>
+                    Discover
+                    Your Style
 
-        <a href="/category?id=1"
-           class="btn btn-primary">
-            Mobiles
-        </a>
+                </h1>
 
-        <a href="/category?id=2"
-           class="btn btn-success">
-            Laptops
-        </a>
+                <p>
 
-        <a href="/category?id=3"
-           class="btn btn-warning">
-            Fashion
-        </a>
+                    Premium Fashion Collection
+                    Designed For Modern Living.
 
-        <a href="/category?id=4"
-           class="btn btn-danger">
-            Groceries
-        </a>
+                </p>
+
+                <a href="#products"
+                   class="shop-btn">
+
+                    SHOP NOW
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-6 text-center">
+
+                <img src="/images/banner-fashion.png"
+                     class="hero-img">
+
+            </div>
+
+        </div>
 
     </div>
 
-</div>
+</section>
+
+<!-- ================= CATEGORY ================= -->
+
+<section class="container mt-5">
+
+    <h2 class="section-title">
+
+        Shop By Category
+
+    </h2>
+
+    <div class="row mt-4">
+                <div class="col-md-3">
+
+            <a href="/category?id=1"
+               class="category-card">
+
+                <img src="/images/categories/men.jpg">
+
+                <h5>
+
+                    Men
+
+                </h5>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <a href="/category?id=2"
+               class="category-card">
+
+                <img src="/images/categories/women.jpg">
+
+                <h5>
+
+                    Women
+
+                </h5>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <a href="/category?id=3"
+               class="category-card">
+
+                <img src="/images/categories/kids.jpg">
+
+                <h5>
+
+                    Kids
+
+                </h5>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <a href="/category?id=4"
+               class="category-card">
+
+                <img src="/images/categories/accessories.jpg">
+
+                <h5>
+
+                    Accessories
+
+                </h5>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
 
 <!-- ================= PRODUCTS ================= -->
 
-<div class="container mt-5">
+<section
+        class="container mt-5"
+        id="products">
 
-    <h2 class="mb-4">
+    <h2 class="section-title">
 
         Featured Products
 
     </h2>
 
-    <div class="row g-4">
+    <div class="row g-4 mt-2">
 
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+        <div class="col-lg-3 col-md-4 col-sm-6"
+
              th:each="product : ${products}">
 
-            <div class="card shadow-sm">
+            <div class="product-card">
 
-                <img th:src="@{'/images/products/' + ${product.image}}"
-                     class="card-img-top"
-                     th:alt="${product.name}">
+                <img
 
-                <div class="card-body">
+                        th:src="@{'/images/products/' + ${product.image}}"
 
-                    <h5 th:text="${product.name}">
+                        th:alt="${product.name}"
+
+                        class="product-img">
+
+                <div class="product-body">
+
+                    <h5
+
+                            th:text="${product.name}">
+
                         Product Name
+
                     </h5>
 
-                    <p th:text="${product.description}">
-                        Product Description
+                    <p
+
+                            th:text="${product.description}">
+
+                        Description
+
                     </p>
 
-                    <h4 class="text-success">
+                    <h4>
 
-                        ₹ <span th:text="${product.price}"></span>
+                        ₹ <span
+
+                        th:text="${product.price}"></span>
 
                     </h4>
 
-                    <div class="d-grid gap-2 mt-3">
+                    <div class="product-buttons">
 
-                        <a th:href="@{/product/{id}(id=${product.id})}"
-                           class="btn btn-info">
+                        <a
 
-                            👁 View Details
+                                th:href="@{/product/{id}(id=${product.id})}"
 
-                        </a>
+                                class="view-btn">
 
-                        <a th:href="@{/cart/add/{id}(id=${product.id})}"
-                           class="btn btn-primary">
-
-                            🛒 Add To Cart
+                            View
 
                         </a>
 
-                        <a th:href="@{/wishlist/add/{id}(id=${product.id})}"
-                           class="btn btn-outline-danger">
+                        <a
 
-                            ❤️ Add Wishlist
+                                th:href="@{/cart/add/{id}(id=${product.id})}"
+
+                                class="cart-btn">
+
+                            Add To Cart
 
                         </a>
 
@@ -294,33 +334,211 @@
 
     </div>
 
-</div>
+</section>
+<!-- ================= WHY CHOOSE US ================= -->
+
+<section class="why-section">
+
+    <div class="container">
+
+        <h2 class="section-title">
+
+            Why Choose SRIG ESSENSE
+
+        </h2>
+
+        <div class="row mt-5">
+
+            <div class="col-md-4">
+
+                <div class="why-card">
+
+                    <i class="fa-solid fa-truck-fast"></i>
+
+                    <h4>
+
+                        Fast Delivery
+
+                    </h4>
+
+                    <p>
+
+                        Quick and secure delivery
+                        across India.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="why-card">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <h4>
+
+                        Secure Shopping
+
+                    </h4>
+
+                    <p>
+
+                        Safe payments with trusted
+                        checkout.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="why-card">
+
+                    <i class="fa-solid fa-rotate-left"></i>
+
+                    <h4>
+
+                        Easy Returns
+
+                    </h4>
+
+                    <p>
+
+                        Hassle-free return policy
+                        for all eligible products.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 <!-- ================= FOOTER ================= -->
 
-<footer class="bg-dark text-white text-center p-4">
+<footer class="footer">
 
-    <h5>
+    <div class="container">
 
-        SRIG ESSENSE
+        <div class="row">
 
-    </h5>
+            <div class="col-md-4">
 
-    <p>
+                <img src="/images/logo3.png"
+                     class="footer-logo">
 
-        Beauty & Personal Care Store
+                <h4>
 
-    </p>
+                    SRIG ESSENSE
 
-    <p>
+                </h4>
 
-        © 2026 All Rights Reserved
+                <p>
 
-    </p>
+                    Own Your Style
+
+                </p>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <h5>
+
+                    Quick Links
+
+                </h5>
+
+                <a href="/home">
+
+                    Home
+
+                </a>
+
+                <a href="/products">
+
+                    Products
+
+                </a>
+
+                <a href="/wishlist">
+
+                    Wishlist
+
+                </a>
+
+                <a href="/cart">
+
+                    Cart
+
+                </a>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <h5>
+
+                    Follow Us
+
+                </h5>
+
+                <div class="social-icons">
+
+                    <a href="#">
+
+                        <i class="fab fa-facebook-f"></i>
+
+                    </a>
+
+                    <a href="#">
+
+                        <i class="fab fa-instagram"></i>
+
+                    </a>
+
+                    <a href="#">
+
+                        <i class="fab fa-x-twitter"></i>
+
+                    </a>
+
+                    <a href="#">
+
+                        <i class="fab fa-youtube"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+                <hr>
+
+        <div class="text-center mt-4">
+
+            <p>
+
+                © 2026 SRIG ESSENSE. All Rights Reserved.
+
+            </p>
+
+        </div>
+
+    </div>
 
 </footer>
-
-<!-- Bootstrap JS -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
