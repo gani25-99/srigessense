@@ -16,8 +16,54 @@ public class OtpController {
     @Autowired
     private OtpService otpService;
 
-    @PostMapping("/send-otp")
-    public String sendOtp(
+    // ==========================
+    // LOGIN - SEND OTP
+    // ==========================
+
+    @PostMapping("/login/send-otp")
+    public String loginSendOtp(
+            @RequestParam String mobile,
+            Model model) {
+
+        otpService.sendOtp(mobile);
+
+        model.addAttribute("mobile", mobile);
+
+        return "verify-otp";
+    }
+
+    // ==========================
+    // LOGIN - VERIFY OTP
+    // ==========================
+
+    @PostMapping("/login/verify-otp")
+    public String loginVerifyOtp(
+            @RequestParam String mobile,
+            @RequestParam String otp,
+            HttpSession session,
+            Model model) {
+
+        String result = otpService.verifyLoginOtp(mobile, otp);
+
+        if ("Success".equals(result)) {
+
+            session.setAttribute("mobile", mobile);
+
+            return "redirect:/home";
+        }
+
+        model.addAttribute("mobile", mobile);
+        model.addAttribute("error", result);
+
+        return "verify-otp";
+    }
+
+    // ==========================
+    // REGISTER - SEND OTP
+    // ==========================
+
+    @PostMapping("/register/send-otp")
+    public String registerSendOtp(
             @RequestParam String name,
             @RequestParam(required = false) String email,
             @RequestParam String mobile,
@@ -37,8 +83,12 @@ public class OtpController {
         return "verify-otp";
     }
 
-    @PostMapping("/verify-otp")
-    public String verifyOtp(
+    // ==========================
+    // REGISTER - VERIFY OTP
+    // ==========================
+
+    @PostMapping("/register/verify-otp")
+    public String registerVerifyOtp(
             @RequestParam String mobile,
             @RequestParam String otp,
             HttpSession session,
@@ -56,13 +106,16 @@ public class OtpController {
                 otp);
 
         if ("Success".equals(result)) {
+
             session.setAttribute("mobile", mobile);
+
             return "redirect:/home";
         }
 
         model.addAttribute("mobile", mobile);
-        model.addAttribute("error", "Invalid OTP");
+        model.addAttribute("error", result);
 
-        return "verify-otp";
+        return "verify-login-otp";
     }
+
 }

@@ -1,115 +1,25 @@
-let count = 30;
+const mobileTab = document.getElementById("mobileTab");
+const emailTab = document.getElementById("emailTab");
 
-function sendOtp(){
+const mobileLogin = document.getElementById("mobileLogin");
+const emailLogin = document.getElementById("emailLogin");
 
-let mobile=document.getElementById("mobile").value;
+mobileTab.addEventListener("click", function () {
 
-if(mobile.length!=10){
+    mobileTab.classList.add("active");
+    emailTab.classList.remove("active");
 
-alert("Enter Valid Mobile Number");
-
-return;
-
-}
-
-fetch("/api/auth/send-otp",{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":"application/json"
-
-},
-
-body:JSON.stringify({
-
-mobile:mobile
-
-})
-
-})
-
-.then(res=>res.text())
-
-.then(data=>{
-
-alert(data);
-
-document.getElementById("otpSection").style.display="block";
-
-startTimer();
+    mobileLogin.style.display = "block";
+    emailLogin.style.display = "none";
 
 });
 
-}
+emailTab.addEventListener("click", function () {
 
-function verifyOtp(){
+    emailTab.classList.add("active");
+    mobileTab.classList.remove("active");
 
-let mobile=document.getElementById("mobile").value;
-
-let otp=document.getElementById("otp").value;
-
-fetch("/api/auth/verify-otp",{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":"application/json"
-
-},
-
-body:JSON.stringify({
-
-mobile:mobile,
-
-otp:otp
-
-})
-
-})
-
-.then(res=>res.text())
-
-.then(data=>{
-
-alert(data);
-
-if(data==="Login Successful" ||
-
-data==="New User Registered Successfully"){
-
-window.location="/home";
-
-}
+    emailLogin.style.display = "block";
+    mobileLogin.style.display = "none";
 
 });
-
-}
-
-function startTimer(){
-
-count=20;
-
-let timer=setInterval(function(){
-
-count--;
-
-document.getElementById("timer").innerHTML=
-
-"Resend OTP in "+count+" sec";
-
-if(count==0){
-
-clearInterval(timer);
-
-document.getElementById("timer").innerHTML=
-
-"<a href='#' onclick='sendOtp()'>Resend OTP</a>";
-
-}
-
-},1000);
-
-}

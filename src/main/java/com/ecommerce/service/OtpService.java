@@ -18,9 +18,12 @@ public class OtpService {
     private TwilioVerifyService twilioVerifyService;
 
     public String sendOtp(String mobile) {
+
         return twilioVerifyService.sendOtp(mobile);
+
     }
 
+    // Register OTP
     public String verifyOtp(String name,
                             String email,
                             String mobile,
@@ -35,16 +38,36 @@ public class OtpService {
 
         Optional<User> user = userRepository.findByMobile(mobile);
 
+        if (user.isPresent()) {
+            return "Success";
+        }
+
+        User newUser = new User();
+
+        newUser.setName(name);
+        newUser.setEmail(email);
+        newUser.setMobile(mobile);
+        newUser.setPassword(password);
+
+        userRepository.save(newUser);
+
+        return "Success";
+    }
+
+    // Login OTP
+    public String verifyLoginOtp(String mobile,
+                                 String otp) {
+
+        boolean verified = twilioVerifyService.verifyOtp(mobile, otp);
+
+        if (!verified) {
+            return "Invalid OTP";
+        }
+
+        Optional<User> user = userRepository.findByMobile(mobile);
+
         if (user.isEmpty()) {
-
-            User newUser = new User();
-
-            newUser.setName(name);
-            newUser.setEmail(email);
-            newUser.setMobile(mobile);
-            newUser.setPassword(password);
-
-            userRepository.save(newUser);
+            return "User Not Found";
         }
 
         return "Success";

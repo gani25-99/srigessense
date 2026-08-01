@@ -11,6 +11,16 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
     @GetMapping("/admin/products")
     public String adminProducts() {
         return "admin-products";
@@ -20,4 +30,5 @@ public class HomeController {
     public String success() {
         return "success";
     }
+
 }

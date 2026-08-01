@@ -4,14 +4,11 @@
 <head>
 
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Register | SRIG ESSENSE</title>
 
-    <link rel="stylesheet"
-          th:href="@{/css/register.css}">
+    <link rel="stylesheet" th:href="@{/css/register.css}">
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -23,7 +20,6 @@
 <div class="background">
 
     <div class="circle circle1"></div>
-
     <div class="circle circle2"></div>
 
 </div>
@@ -34,8 +30,7 @@
 
         <div class="logo">
 
-            <img src="/images/logo3.png"
-                 alt="Logo">
+            <img src="/images/logo3.png" alt="Logo">
 
             <h1>SRIG ESSENSE</h1>
 
@@ -47,8 +42,7 @@
 
         <h2>Create Account</h2>
 
-        <form action="/register"
-              method="post">
+        <form action="/register/send-otp" method="post">
 
             <div class="input-box">
 
@@ -133,9 +127,7 @@
 
                 <label>
 
-                    <input
-                            type="checkbox"
-                            required>
+                    <input type="checkbox" required>
 
                     I agree to the
 
@@ -149,7 +141,7 @@
                     type="submit"
                     class="register-btn">
 
-                Create Account
+                Send OTP
 
             </button>
 
