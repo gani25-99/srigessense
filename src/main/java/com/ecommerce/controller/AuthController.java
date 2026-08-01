@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.dto.OtpRequest;
-import com.ecommerce.dto.VerifyOtpRequest;
 import com.ecommerce.service.OtpService;
 
 @RestController
@@ -18,23 +17,8 @@ public class AuthController {
     private OtpService otpService;
 
     @PostMapping("/send-otp")
-    public String sendOtp(@RequestBody OtpRequest request){
-
+    public String sendOtp(@RequestBody OtpRequest request) {
         return otpService.sendOtp(request.getMobile());
-
-    }
-
-    @PostMapping("/verify-otp")
-    public String verifyOtp(@RequestBody VerifyOtpRequest request){
-
-        return otpService.verifyOtp(
-
-                request.getMobile(),
-
-                request.getOtp()
-
-        );
-
     }
 
 }

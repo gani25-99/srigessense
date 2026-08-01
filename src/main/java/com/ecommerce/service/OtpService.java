@@ -21,7 +21,11 @@ public class OtpService {
         return twilioVerifyService.sendOtp(mobile);
     }
 
-    public String verifyOtp(String mobile, String otp) {
+    public String verifyOtp(String name,
+                            String email,
+                            String mobile,
+                            String password,
+                            String otp) {
 
         boolean verified = twilioVerifyService.verifyOtp(mobile, otp);
 
@@ -32,15 +36,18 @@ public class OtpService {
         Optional<User> user = userRepository.findByMobile(mobile);
 
         if (user.isEmpty()) {
+
             User newUser = new User();
+
+            newUser.setName(name);
+            newUser.setEmail(email);
             newUser.setMobile(mobile);
-            newUser.setName("New Customer");
+            newUser.setPassword(password);
 
             userRepository.save(newUser);
-
-            return "New User Registered Successfully";
         }
 
-        return "Login Successful";
+        return "Success";
     }
+
 }

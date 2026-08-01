@@ -27,6 +27,9 @@ public class User {
     private String email;
 
     @Column(length = 255)
+    private String password;
+
+    @Column(length = 255)
     private String address;
 
     @Column(length = 255)
@@ -67,6 +70,18 @@ public class User {
         this.email = email;
     }
 
+    // Password
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    // Address
+
     public String getAddress() {
         return address;
     }
@@ -75,6 +90,8 @@ public class User {
         this.address = address;
     }
 
+    // Profile Image
+
     public String getProfileImage() {
         return profileImage;
     }
@@ -82,6 +99,8 @@ public class User {
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
+
+    // Created At
 
     public LocalDateTime getCreatedAt() {
         return createdAt;

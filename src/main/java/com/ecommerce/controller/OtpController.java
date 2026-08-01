@@ -17,9 +17,20 @@ public class OtpController {
     private OtpService otpService;
 
     @PostMapping("/send-otp")
-    public String sendOtp(@RequestParam String mobile, Model model) {
+    public String sendOtp(
+            @RequestParam String name,
+            @RequestParam(required = false) String email,
+            @RequestParam String mobile,
+            @RequestParam String password,
+            HttpSession session,
+            Model model) {
 
         otpService.sendOtp(mobile);
+
+        session.setAttribute("name", name);
+        session.setAttribute("email", email);
+        session.setAttribute("mobile", mobile);
+        session.setAttribute("password", password);
 
         model.addAttribute("mobile", mobile);
 
@@ -27,18 +38,25 @@ public class OtpController {
     }
 
     @PostMapping("/verify-otp")
-    public String verifyOtp(@RequestParam String mobile,
-                            @RequestParam String otp,
-                            Model model,
-                            HttpSession session) {
+    public String verifyOtp(
+            @RequestParam String mobile,
+            @RequestParam String otp,
+            HttpSession session,
+            Model model) {
 
-        String result = otpService.verifyOtp(mobile, otp);
+        String name = (String) session.getAttribute("name");
+        String email = (String) session.getAttribute("email");
+        String password = (String) session.getAttribute("password");
 
-        if (result.equals("Login Successful") ||
-            result.equals("New User Registered Successfully")) {
+        String result = otpService.verifyOtp(
+                name,
+                email,
+                mobile,
+                password,
+                otp);
 
+        if ("Success".equals(result)) {
             session.setAttribute("mobile", mobile);
-
             return "redirect:/home";
         }
 
