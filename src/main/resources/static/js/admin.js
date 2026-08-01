@@ -7,7 +7,6 @@ const form = document.getElementById("productForm");
 async function loadCategories() {
 
     const response = await fetch("/api/category");
-
     const categories = await response.json();
 
     let options = '<option value="">Select Category</option>';
@@ -45,7 +44,8 @@ function displayProducts(products) {
                 <img
                     src="/images/products/${product.image}"
                     class="card-img-top"
-                    style="height:220px;object-fit:cover;">
+                    style="height:220px;object-fit:cover;"
+                    onerror="this.src='/images/logo3.png'">
 
                 <div class="card-body">
 
@@ -108,7 +108,6 @@ function displayProducts(products) {
 async function loadProducts() {
 
     const response = await fetch("/api/product");
-
     const products = await response.json();
 
     displayProducts(products);
@@ -127,41 +126,33 @@ form.addEventListener("submit", async function (e) {
 
     if (id === "") {
 
-        // Add Product
-
         const data = new FormData(form);
 
         const response = await fetch("/api/product/upload", {
 
             method: "POST",
-
             body: data
 
         });
 
+        const message = await response.text();
+
         if (!response.ok) {
 
-    const error = await response.text();
-    console.log(error);
-    alert("Save Failed\n\n" + error);
+            alert("Save Failed\n\n" + message);
+            return;
 
-    return;
-}
+        }
 
         alert("Product Saved Successfully");
 
     } else {
 
-        // Update Product
-
         const product = {
 
             name: form.name.value,
-
             description: form.description.value,
-
             price: Number(form.price.value),
-
             quantity: Number(form.quantity.value),
 
             category: {
@@ -186,10 +177,11 @@ form.addEventListener("submit", async function (e) {
 
         });
 
+        const message = await response.text();
+
         if (!response.ok) {
 
-            alert("Update Failed");
-
+            alert("Update Failed\n\n" + message);
             return;
 
         }
@@ -216,21 +208,33 @@ async function deleteProduct(id) {
         return;
     }
 
-    const response = await fetch("/api/product/" + id, {
+    try {
 
-        method: "DELETE"
+        const response = await fetch("/api/product/" + id, {
 
-    });
+            method: "DELETE"
 
-    if (response.ok) {
+        });
 
-        alert("Product Deleted");
+        const message = await response.text();
 
-        loadProducts();
+        if (response.ok) {
 
-    } else {
+            alert(message);
 
-        alert("Delete Failed");
+            loadProducts();
+
+        } else {
+
+            alert("Delete Failed\n\n" + message);
+
+        }
+
+    } catch (e) {
+
+        alert("Server Error");
+
+        console.log(e);
 
     }
 
@@ -247,7 +251,6 @@ async function editProduct(id) {
     const product = await response.json();
 
     document.getElementById("productId").value = product.id;
-
     form.name.value = product.name;
     form.description.value = product.description;
     form.price.value = product.price;
@@ -275,7 +278,6 @@ async function searchProducts() {
     if (keyword.trim() === "") {
 
         loadProducts();
-
         return;
 
     }
@@ -296,5 +298,4 @@ document.getElementById("search")
         .addEventListener("keyup", searchProducts);
 
 loadCategories();
-
 loadProducts();

@@ -3,7 +3,6 @@ package com.ecommerce.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,25 +28,21 @@ public class ProductController {
     @Autowired
     private FileUploadService fileUploadService;
 
-    // Get all products
     @GetMapping
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
-    // Get product by ID
     @GetMapping("/{id}")
     public Product getProduct(@PathVariable Long id) {
         return productService.getProduct(id);
     }
 
-    // Save product using JSON
     @PostMapping
     public Product save(@RequestBody Product product) {
         return productService.save(product);
     }
 
-    // Upload product with image
     @PostMapping("/upload")
     public Product uploadProduct(
             @RequestParam("name") String name,
@@ -74,21 +69,31 @@ public class ProductController {
         return productService.save(product);
     }
 
-    // Update product
     @PutMapping("/{id}")
     public Product update(@PathVariable Long id,
                           @RequestBody Product product) {
         return productService.update(id, product);
     }
+@DeleteMapping("/{id}")
+public String delete(@PathVariable Long id) {
 
-    // Delete product
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id) {
+    try {
+
         productService.delete(id);
+
         return "Product Deleted Successfully";
+
+    } catch (Exception e) {
+
+        throw new org.springframework.web.server.ResponseStatusException(
+                org.springframework.http.HttpStatus.BAD_REQUEST,
+                "Cannot delete product. Remove it from Cart, Wishlist and Orders first."
+        );
+
     }
 
-    // Search products
+}
+
     @GetMapping("/search")
     public List<Product> search(@RequestParam String keyword) {
         return productService.search(keyword);
