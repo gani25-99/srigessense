@@ -34,7 +34,7 @@
 
         <div class="overlay">
 
-            <img src="/images/logo3.png"
+            <img src="/images/logo.png"
                  class="brand-logo"
                  alt="Logo">
 
@@ -69,7 +69,7 @@
 
             <div class="text-center mb-4">
 
-                <img src="/images/logo3.png"
+                <img src="/images/logo.png"
                      class="logo">
 
                 <h2>
@@ -87,7 +87,12 @@
             </div>
 
             <!-- EMAIL LOGIN -->
+<div th:if="${error}"
+     class="alert alert-danger text-center">
 
+    <span th:text="${error}"></span>
+
+</div>
             <form action="/login/email"
                   method="post"
                   id="emailForm">
@@ -223,94 +228,7 @@
 
             </div>
 
-            <div class="social-divider">
-
-                <span>
-
-                    Secure Login
-
-                </span>
-
-            </div>
-
-            <div class="security-info">
-
-                <i class="fa-solid fa-shield-halved"></i>
-
-                Your account is protected with OTP verification.
-
-            </div>
-                        <div class="features">
-
-                <div class="feature">
-
-                    <i class="fa-solid fa-truck-fast"></i>
-
-                    <span>
-
-                        Fast Delivery
-
-                    </span>
-
-                </div>
-
-                <div class="feature">
-
-                    <i class="fa-solid fa-credit-card"></i>
-
-                    <span>
-
-                        Secure Payments
-
-                    </span>
-
-                </div>
-
-                <div class="feature">
-
-                    <i class="fa-solid fa-arrow-rotate-left"></i>
-
-                    <span>
-
-                        Easy Returns
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <div class="footer-links">
-
-                <a href="/contact">
-
-                    Contact
-
-                </a>
-
-                <span>|</span>
-
-                <a href="#">
-
-                    Privacy Policy
-
-                </a>
-
-                <span>|</span>
-
-                <a href="#">
-
-                    Terms
-
-                </a>
-
-            </div>
-
-            <div class="copyright">
-
-                © 2026 SRIG ESSENSE
-
-            </div>
+           
 
         </div>
 
