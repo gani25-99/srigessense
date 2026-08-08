@@ -17,48 +17,158 @@ public class FileUploadService {
     @Value("${upload.path}")
     private String uploadPath;
 
-    public String uploadFile(MultipartFile file) throws IOException {
 
-        if (file.isEmpty()) {
-            throw new RuntimeException("No file selected");
+    // =========================================================
+    // PRODUCT IMAGE UPLOAD
+    // =========================================================
+
+    public String uploadFile(
+            MultipartFile file)
+            throws IOException {
+
+        if (file == null ||
+                file.isEmpty()) {
+
+            throw new RuntimeException(
+                    "Please select an image.");
         }
 
-        String originalName = file.getOriginalFilename();
 
-        if (originalName == null || originalName.isBlank()) {
+        String originalName =
+                file.getOriginalFilename();
+
+
+        if (originalName == null ||
+                originalName.isBlank()) {
+
             originalName = "image.jpg";
         }
 
-        String fileName = System.currentTimeMillis() + "_" + originalName;
 
-        Path folder = Paths.get(uploadPath);
-        Files.createDirectories(folder);
+        // =====================================================
+        // REMOVE PATH FROM ORIGINAL FILENAME
+        // =====================================================
 
-        Path destination = folder.resolve(fileName);
+        String safeName =
+                Paths.get(originalName)
+                        .getFileName()
+                        .toString();
 
-        // Save directly
-        file.transferTo(destination.toFile());
+
+        String fileName =
+                System.currentTimeMillis()
+                        + "_"
+                        + safeName;
+
+
+        // =====================================================
+        // CREATE UPLOAD FOLDER
+        // =====================================================
+
+        Path folder =
+                Paths.get(
+                        System.getProperty(
+                                "user.dir"),
+                        uploadPath);
+
+
+        Files.createDirectories(
+                folder);
+
+
+        // =====================================================
+        // SAVE FILE
+        // =====================================================
+
+        Path destination =
+                folder.resolve(
+                        fileName);
+
+
+        file.transferTo(
+                destination.toFile());
+
 
         return fileName;
     }
 
-    public String uploadProfileImage(MultipartFile file) throws IOException {
 
-        if (file.isEmpty()) {
-            throw new RuntimeException("No file selected");
+    // =========================================================
+    // PROFILE IMAGE UPLOAD
+    // =========================================================
+
+    public String uploadProfileImage(
+            MultipartFile file)
+            throws IOException {
+
+        if (file == null ||
+                file.isEmpty()) {
+
+            throw new RuntimeException(
+                    "Please select an image.");
         }
 
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
 
-        Path folder = Paths.get("C:/ecommerce/uploads/profile/");
-        Files.createDirectories(folder);
+        String originalName =
+                file.getOriginalFilename();
 
-        Path destination = folder.resolve(fileName);
 
-        Thumbnails.of(file.getInputStream())
-                .size(300, 300)
+        if (originalName == null ||
+                originalName.isBlank()) {
+
+            originalName = "profile.jpg";
+        }
+
+
+        // =====================================================
+        // SAFE FILENAME
+        // =====================================================
+
+        String safeName =
+                Paths.get(originalName)
+                        .getFileName()
+                        .toString();
+
+
+        String fileName =
+                System.currentTimeMillis()
+                        + "_"
+                        + safeName;
+
+
+        // =====================================================
+        // PROFILE DIRECTORY
+        // =====================================================
+
+        Path folder =
+                Paths.get(
+                        System.getProperty(
+                                "user.dir"),
+                        "uploads/profile");
+
+
+        Files.createDirectories(
+                folder);
+
+
+        Path destination =
+                folder.resolve(
+                        fileName);
+
+
+        // =====================================================
+        // RESIZE PROFILE IMAGE
+        // =====================================================
+
+        Thumbnails.of(
+                        file.getInputStream())
+                .size(
+                        300,
+                        300)
                 .keepAspectRatio(true)
-                .toFile(destination.toFile());
+                .toFile(
+                        destination.toFile());
+
 
         return fileName;
     }

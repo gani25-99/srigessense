@@ -1,28 +1,57 @@
 package com.ecommerce.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "order_items")
 public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // ==========================
+    // ORDER
+    // ==========================
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Orders order;
+
+    // ==========================
+    // PRODUCT
+    // ==========================
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
+    // ==========================
+    // ORDER DETAILS
+    // ==========================
+
     private Integer quantity;
 
     private Double price;
 
+    private Double subtotal;
+
+    // ==========================
+    // CONSTRUCTOR
+    // ==========================
+
     public OrderItem() {
     }
+
+    // ==========================
+    // GETTERS & SETTERS
+    // ==========================
 
     public Long getId() {
         return id;
@@ -63,4 +92,13 @@ public class OrderItem {
     public void setPrice(Double price) {
         this.price = price;
     }
+
+    public Double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(Double subtotal) {
+        this.subtotal = subtotal;
+    }
+
 }

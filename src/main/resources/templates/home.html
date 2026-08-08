@@ -1,5 +1,8 @@
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -10,12 +13,15 @@
 
     <title>SRIG ESSENSE</title>
 
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
           rel="stylesheet">
 
+    <!-- Home CSS -->
     <link rel="stylesheet"
           th:href="@{/css/home.css}">
 
@@ -23,19 +29,39 @@
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+<body>
+
+
+<!-- ===========================
+        NAVBAR
+=========================== -->
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
 
     <div class="container">
+
+        <!-- Menu -->
+
+        <button class="btn border-0 fs-4 me-3"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#menu">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+        <!-- Logo -->
 
         <a class="navbar-brand d-flex align-items-center"
            href="/home">
 
-            <img src="/images/logo3.png"
-                 class="logo">
+            <img src="/images/srig-logo.png"
+                 width="42"
+                 height="42"
+                 class="me-2 rounded-circle">
 
-            <span class="ms-2 fw-bold">
+            <span class="logo-text">
 
                 SRIG ESSENSE
 
@@ -43,284 +69,392 @@
 
         </a>
 
-        <button class="navbar-toggler"
-                data-bs-toggle="collapse"
-                data-bs-target="#menu">
+        <!-- Search -->
 
-            <span class="navbar-toggler-icon"></span>
+        <form class="d-flex flex-grow-1 mx-5"
+      th:action="@{/products}"
+      method="get">
+
+    <div class="input-group">
+
+        <input
+                type="search"
+                name="keyword"
+                class="form-control search-box"
+                placeholder="Search Products..."
+                th:value="${keyword}">
+
+        <button
+                class="btn btn-dark"
+                type="submit">
+
+            <i class="fa-solid fa-search"></i>
 
         </button>
 
-        <div class="collapse navbar-collapse"
-             id="menu">
+    </div>
 
-            <ul class="navbar-nav ms-auto">
+</form>
 
-                <li class="nav-item">
+        <!-- Right Icons -->
 
-                    <a class="nav-link"
-                       href="/home">
+        <div class="d-flex align-items-center">
 
-                        Home
+            <a href="/wishlist"
+               class="nav-icon">
 
-                    </a>
+                <i class="fa-regular fa-heart"></i>
 
-                </li>
+            </a>
 
-                <li class="nav-item">
+            <a href="/cart"
+               class="nav-icon">
 
-                    <a class="nav-link"
-                       href="/products">
+                <i class="fa-solid fa-cart-shopping"></i>
 
-                        Products
+            </a>
 
-                    </a>
+            <div class="dropdown">
 
-                </li>
+                <a class="nav-icon"
+                   data-bs-toggle="dropdown">
 
-                <li class="nav-item">
+                    <i class="fa-regular fa-user"></i>
 
-                    <a class="nav-link"
-                       href="/wishlist">
+                </a>
 
-                        Wishlist
+                <ul class="dropdown-menu dropdown-menu-end">
 
-                    </a>
+                    <li>
+                        <a class="dropdown-item"
+                           href="/profile">
 
-                </li>
+                            My Profile
 
-                <li class="nav-item">
+                        </a>
+                    </li>
 
-                    <a class="nav-link"
-                       href="/cart">
+                    <li>
+                        <a class="dropdown-item"
+                           href="/orders">
 
-                        Cart
+                            My Orders
 
-                    </a>
+                        </a>
+                    </li>
 
-                </li>
+                    <li>
+                        <a class="dropdown-item"
+                           href="/logout">
 
-                <li class="nav-item">
+                            Logout
 
-                    <a class="nav-link"
-                       href="/dashboard">
+                        </a>
+                    </li>
 
-                        Dashboard
+                </ul>
 
-                    </a>
-
-                </li>
-
-            </ul>
+            </div>
 
         </div>
 
     </div>
 
 </nav>
+<!-- ===========================
+        MEGA MENU
+=========================== -->
 
-<!-- ================= HERO ================= -->
+<div class="offcanvas offcanvas-start"
+     id="menu">
 
-<section class="hero">
+    <div class="offcanvas-header">
 
-    <div class="container">
+        <h4>
 
-        <div class="row align-items-center">
+            Shop By Category
 
-            <div class="col-lg-6">
+        </h4>
 
-                <h1>
+        <button class="btn-close"
+                data-bs-dismiss="offcanvas"></button>
 
-                    Discover
-                    Your Style
+    </div>
 
-                </h1>
+    <div class="offcanvas-body">
+<h5>👔 Shirts</h5>
 
-                <p>
+<a th:href="@{/products/subcategory/1}" class="d-block">Casual Shirts</a>
 
-                    Premium Fashion Collection
-                    Designed For Modern Living.
+<a th:href="@{/products/subcategory/2}" class="d-block">Formal Shirts</a>
 
-                </p>
+<a th:href="@{/products/subcategory/3}" class="d-block">Oversized Shirts</a>
 
-                <a href="#products"
-                   class="shop-btn">
+<a th:href="@{/products/subcategory/4}" class="d-block mb-3">Sports Shirts</a>
+        
 
-                    SHOP NOW
+<h5>👖 Trousers</h5>
 
-                </a>
+<a th:href="@{/products/subcategory/5}" class="d-block">Jeans</a>
 
-            </div>
+<a th:href="@{/products/subcategory/6}" class="d-block">Chinos</a>
 
-            <div class="col-lg-6 text-center">
+<a th:href="@{/products/subcategory/7}" class="d-block">Cargo Pants</a>
 
-                <img src="/images/banner-fashion.png"
-                     class="hero-img">
+<a th:href="@{/products/subcategory/8}" class="d-block mb-3">Formal Trousers</a>
 
-            </div>
+<h5>👟 Shoes</h5>
 
-        </div>
+<a th:href="@{/products/subcategory/9}" class="d-block">Sneakers</a>
+
+<a th:href="@{/products/subcategory/10}" class="d-block">Sports Shoes</a>
+
+<a th:href="@{/products/subcategory/11}" class="d-block">Formal Shoes</a>
+
+<a th:href="@{/products/subcategory/12}" class="d-block mb-3">Loafers</a>
+
+<h5>🧴 Grooming</h5>
+
+<a th:href="@{/products/subcategory/13}" class="d-block">Perfumes</a>
+
+<a th:href="@{/products/subcategory/14}" class="d-block">Deodorants</a>
+
+<a th:href="@{/products/subcategory/15}" class="d-block mb-3">Beard Care</a>
+
+
+
+        <h5>⌚ Accessories</h5>
+
+<a th:href="@{/products/subcategory/16}" class="d-block">Watches</a>
+
+<a th:href="@{/products/subcategory/17}" class="d-block">Wallets</a>
+
+<a th:href="@{/products/subcategory/18}" class="d-block">Belts</a>
+
+<a th:href="@{/products/subcategory/19}" class="d-block">Caps</a>
+
+<a th:href="@{/products/subcategory/20}" class="d-block">Sunglasses</a>
+
+    </div>
+
+</div>
+
+
+<!-- ===========================
+        HERO SECTION
+=========================== -->
+
+<section class="srig-hero">
+
+    <div class="srig-hero-text">
+
+        <small>SRIG ESSENSE</small>
+
+        <h1>
+            ELEVATE YOUR
+            <span>EVERYDAY STYLE</span>
+        </h1>
+
+        <p>
+            Discover premium men's clothing, footwear
+            and accessories made for modern style.
+        </p>
+
+        <a th:href="@{/products}" class="srig-hero-btn">
+            SHOP NOW
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+    </div>
+
+    <div class="srig-hero-photo">
+
+        <img src="/images/herobanner.jpg"
+             alt="SRIG ESSENSE Men's Fashion">
 
     </div>
 
 </section>
 
-<!-- ================= CATEGORY ================= -->
 
-<section class="container mt-5">
 
-    <h2 class="section-title">
 
-        Shop By Category
 
-    </h2>
 
-    <div class="row mt-4">
-                <div class="col-md-3">
+<!-- ==========================================
+                BEST SELLERS
+========================================== -->
 
-            <a href="/category?id=1"
-               class="category-card">
+<section id="best" class="container my-5">
 
-                <img src="/images/categories/men.jpg">
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-                <h5>
+        <div>
 
-                    Men
+            <h2 class="fw-bold">
 
-                </h5>
+                🔥 Best Sellers
 
-            </a>
+            </h2>
 
-        </div>
+            <p class="text-muted">
 
-        <div class="col-md-3">
+                Discover our most loved products.
 
-            <a href="/category?id=2"
-               class="category-card">
-
-                <img src="/images/categories/women.jpg">
-
-                <h5>
-
-                    Women
-
-                </h5>
-
-            </a>
+            </p>
 
         </div>
 
-        <div class="col-md-3">
+        <a th:href="@{/products}"
+           class="btn btn-outline-dark">
 
-            <a href="/category?id=3"
-               class="category-card">
+            View All
 
-                <img src="/images/categories/kids.jpg">
-
-                <h5>
-
-                    Kids
-
-                </h5>
-
-            </a>
-
-        </div>
-
-        <div class="col-md-3">
-
-            <a href="/category?id=4"
-               class="category-card">
-
-                <img src="/images/categories/accessories.jpg">
-
-                <h5>
-
-                    Accessories
-
-                </h5>
-
-            </a>
-
-        </div>
+        </a>
 
     </div>
 
-</section>
+    <div class="row g-4">
 
-<!-- ================= PRODUCTS ================= -->
+        <div class="col-lg-3 col-md-6"
+             th:each="product : ${bestProducts}">
 
-<section
-        class="container mt-5"
-        id="products">
+            <div class="card product-card h-100 shadow-sm border-0 rounded-4">
 
-    <h2 class="section-title">
+                <!-- Product Image -->
 
-        Featured Products
+                <div class="position-relative">
 
-    </h2>
+                    <img
+                            th:src="@{'/products/' + ${product.image}}"
+                            class="card-img-top"
+                            alt="Product"
+                            onerror="this.src='/images/logo3.png'">
 
-    <div class="row g-4 mt-2">
+                    <!-- Badge -->
 
-        <div class="col-lg-3 col-md-4 col-sm-6"
+                    <span class="badge bg-danger position-absolute top-0 start-0 m-2">
 
-             th:each="product : ${products}">
+                        Bestseller
 
-            <div class="product-card">
+                    </span>
 
-                <img
+                    <!-- Wishlist -->
 
-                        th:src="@{'/images/products/' + ${product.image}}"
+                    <a th:href="@{/wishlist/add/{id}(id=${product.id})}"
+                       class="btn btn-light rounded-circle position-absolute top-0 end-0 m-2">
 
-                        th:alt="${product.name}"
+                        <i class="fa-regular fa-heart"></i>
 
-                        class="product-img">
+                    </a>
 
-                <div class="product-body">
+                </div>
 
-                    <h5
+                <!-- Card Body -->
 
-                            th:text="${product.name}">
+                <div class="card-body">
+
+                    <!-- Brand -->
+
+                    <small class="text-muted"
+                           th:text="${product.brand}">
+
+                        Brand
+
+                    </small>
+
+                    <!-- Product Name -->
+
+                    <h5 class="fw-bold mt-2"
+                        th:text="${product.name}">
 
                         Product Name
 
                     </h5>
 
-                    <p
+                    <!-- Rating -->
 
-                            th:text="${product.description}">
+                    <div class="text-warning mb-2">
 
-                        Description
+                        ★★★★★
 
-                    </p>
+                        <small class="text-dark">
 
-                    <h4>
+                            4.8
 
-                        ₹ <span
+                        </small>
 
-                        th:text="${product.price}"></span>
+                    </div>
+
+                    <!-- Price -->
+
+                    <h4 class="fw-bold">
+
+                        ₹<span th:text="${product.price}"></span>
 
                     </h4>
 
-                    <div class="product-buttons">
+                    <!-- Colors -->
 
-                        <a
+                    <div class="mt-3">
 
-                                th:href="@{/product/{id}(id=${product.id})}"
+                        <small class="fw-semibold">
 
-                                class="view-btn">
+                            Colors
 
-                            View
+                        </small>
+
+                        <div>
+
+                            ⚫ ⚪ 🔵
+
+                        </div>
+
+                    </div>
+
+                    <!-- Sizes -->
+
+                    <div class="mt-2">
+
+                        <small class="fw-semibold">
+
+                            Sizes
+
+                        </small>
+
+                        <div>
+
+                            <span class="badge bg-light text-dark">S</span>
+
+                            <span class="badge bg-light text-dark">M</span>
+
+                            <span class="badge bg-light text-dark">L</span>
+
+                            <span class="badge bg-light text-dark">XL</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+
+                <div class="card-footer bg-white border-0">
+
+                    <div class="d-grid gap-2">
+
+                        <a th:href="@{/product/{id}(id=${product.id})}"
+                           class="btn btn-outline-dark">
+
+                            View Product
 
                         </a>
 
-                        <a
+                        <a th:href="@{/cart/add/{id}(id=${product.id})}"
+                           class="btn btn-dark">
 
-                                th:href="@{/cart/add/{id}(id=${product.id})}"
-
-                                class="cart-btn">
-
-                            Add To Cart
+                            Add to Cart
 
                         </a>
 
@@ -335,84 +469,160 @@
     </div>
 
 </section>
-<!-- ================= WHY CHOOSE US ================= -->
+ 
 
-<section class="why-section">
+    
+<!-- ===========================
+        FEATURED COLLECTIONS
+=========================== -->
 
-    <div class="container">
+<section class="container my-5">
+
+    <div class="text-center mb-5">
 
         <h2 class="section-title">
 
-            Why Choose SRIG ESSENSE
+            Featured Collections
 
         </h2>
 
-        <div class="row mt-5">
+        <p class="text-muted">
 
-            <div class="col-md-4">
+            Shop your favourite styles.
 
-                <div class="why-card">
+        </p>
 
-                    <i class="fa-solid fa-truck-fast"></i>
+    </div>
 
-                    <h4>
+    <div class="row g-4">
 
-                        Fast Delivery
+        <!-- Casual Shirts -->
 
-                    </h4>
+        <div class="col-lg-3 col-md-6">
 
-                    <p>
+            <div class="card category-card">
 
-                        Quick and secure delivery
-                        across India.
+                <img src="/images/collections/casual-shirt.jpg"
+                     class="card-img-top"
+                     alt="Casual Shirts"
+                     onerror="this.src='/images/casuallogo.webp'">
+
+                <div class="card-body text-center">
+
+                    <h4>Casual Shirts</h4>
+
+                    <p class="text-muted">
+
+                        Everyday comfort with premium style.
 
                     </p>
+
+                    <a href="/shirts/casual"
+                       class="btn btn-dark">
+
+                        Explore
+
+                    </a>
 
                 </div>
 
             </div>
 
-            <div class="col-md-4">
+        </div>
 
-                <div class="why-card">
+        <!-- Formal Shirts -->
 
-                    <i class="fa-solid fa-shield-halved"></i>
+        <div class="col-lg-3 col-md-6">
 
-                    <h4>
+            <div class="card category-card">
 
-                        Secure Shopping
+                <img src="/images/collections/formal-shirt.jpg"
+                     class="card-img-top"
+                     alt="Formal Shirts"
+                     onerror="this.src='/images/formallogo.webp'">
 
-                    </h4>
+                <div class="card-body text-center">
 
-                    <p>
+                    <h4>Formal Shirts</h4>
 
-                        Safe payments with trusted
-                        checkout.
+                    <p class="text-muted">
+
+                        Perfect for office and business wear.
 
                     </p>
+
+                    <a href="/shirts/formal"
+                       class="btn btn-dark">
+
+                        Explore
+
+                    </a>
 
                 </div>
 
             </div>
 
-            <div class="col-md-4">
+        </div>
 
-                <div class="why-card">
+        <!-- Jeans -->
 
-                    <i class="fa-solid fa-rotate-left"></i>
+        <div class="col-lg-3 col-md-6">
 
-                    <h4>
+            <div class="card category-card">
 
-                        Easy Returns
+                <img src="/images/collections/jeans.jpg"
+                     class="card-img-top"
+                     alt="Jeans"
+                     onerror="this.src='/images/jeansl.webp'">
 
-                    </h4>
+                <div class="card-body text-center">
 
-                    <p>
+                    <h4>Jeans</h4>
 
-                        Hassle-free return policy
-                        for all eligible products.
+                    <p class="text-muted">
+
+                        Modern fit with all-day comfort.
 
                     </p>
+
+                   <a th:href="@{/jeans}"
+   class="btn btn-dark">
+                        Explore
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Sneakers -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card category-card">
+
+                <img src="/images/collections/sneakers.jpg"
+                     class="card-img-top"
+                     alt="Sneakers"
+                     onerror="this.src='/images/sneakerslo.webp'">
+
+                <div class="card-body text-center">
+
+                    <h4>Sneakers</h4>
+
+                    <p class="text-muted">
+
+                        Casual and sports sneakers collection.
+
+                    </p>
+
+                    <a th:href="@{/sneakers}"
+   class="btn btn-dark">
+                        Explore
+
+                    </a>
 
                 </div>
 
@@ -423,99 +633,568 @@
     </div>
 
 </section>
+<!-- ===========================
+        NEW ARRIVALS
+=========================== -->
 
-<!-- ================= FOOTER ================= -->
+<!-- ==========================================
+                NEW ARRIVALS
+========================================== -->
 
-<footer class="footer">
+<section id="new" class="container my-5">
 
-    <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <div class="row">
+        <div>
 
-            <div class="col-md-4">
+            <h2 class="section-title">
 
-                <img src="/images/logo3.png"
-                     class="footer-logo">
+                New Arrivals
 
-                <h4>
+            </h2>
 
-                    SRIG ESSENSE
+            <p class="text-muted">
 
-                </h4>
+                Fresh arrivals from our latest collection.
 
-                <p>
+            </p>
 
-                    Own Your Style
+        </div>
+
+        <a th:href="@{/products}"
+           class="btn btn-outline-dark">
+
+            View All
+
+        </a>
+
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-3 col-md-6"
+             th:each="product : ${newProducts}">
+
+            <div class="card product-card h-100 shadow-sm border-0">
+
+                <!-- Product Image -->
+
+                <div class="position-relative">
+
+                    <img
+                            th:src="@{'/products/' + ${product.image}}"
+                            class="card-img-top"
+                            alt="Product"
+                            onerror="this.src='/images/logo3.png'">
+
+                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">
+
+                        NEW
+
+                    </span>
+
+                    <!-- Wishlist -->
+
+                    <a th:href="@{/wishlist/add/{id}(id=${product.id})}"
+                       class="btn btn-light rounded-circle position-absolute top-0 start-0 m-2">
+
+                        <i class="fa-regular fa-heart"></i>
+
+                    </a>
+
+                </div>
+
+                <!-- Product Details -->
+
+                <div class="card-body">
+
+                    <small class="text-muted"
+                           th:text="${product.brand}">
+
+                        Brand
+
+                    </small>
+
+                    <h5 class="mt-2"
+                        th:text="${product.name}">
+
+                        Product Name
+
+                    </h5>
+
+                    <div class="text-warning mb-2">
+
+                        ★★★★★
+
+                        <small class="text-dark">
+
+                            4.8
+
+                        </small>
+
+                    </div>
+
+                    <h4 class="price">
+
+                        ₹<span th:text="${product.price}"></span>
+
+                    </h4>
+
+                    <!-- Placeholder Colors -->
+
+                    <div class="mt-3">
+
+                        <small class="fw-semibold">
+
+                            Colors
+
+                        </small>
+
+                        <div>
+
+                            ⚫ ⚪ 🔵
+
+                        </div>
+
+                    </div>
+
+                    <!-- Placeholder Sizes -->
+
+                    <div class="mt-2">
+
+                        <small class="fw-semibold">
+
+                            Sizes
+
+                        </small>
+
+                        <div>
+
+                            <span class="badge bg-light text-dark">S</span>
+
+                            <span class="badge bg-light text-dark">M</span>
+
+                            <span class="badge bg-light text-dark">L</span>
+
+                            <span class="badge bg-light text-dark">XL</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Buttons -->
+
+                <div class="card-footer bg-white border-0">
+
+                    <div class="d-grid gap-2">
+
+                        <a th:href="@{/product/{id}(id=${product.id})}"
+                           class="btn btn-outline-dark">
+
+                            View Product
+
+                        </a>
+
+                        <a th:href="@{/cart/add/{id}(id=${product.id})}"
+                           class="btn btn-dark">
+
+                            Add to Cart
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ===========================
+        TOP BRANDS
+=========================== -->
+<!-- ==========================
+TOP BRANDS
+========================== -->
+
+<section class="container my-5">
+
+    <div class="text-center mb-5">
+
+        <h2 class="section-title">
+            Top Brands
+        </h2>
+
+        <p class="text-muted">
+            Shop your favourite premium brands.
+        </p>
+
+    </div>
+
+    <div class="row justify-content-center g-4">
+
+        <!-- WROGN -->
+
+        <div class="col-6 col-md-4 col-lg-2">
+
+            <a th:href="@{/products(brand='WROGN')}"
+               class="text-decoration-none text-dark d-block">
+
+                <div class="brand-card">
+
+                    <img src="/images/brands/wrogn.png"
+                         class="img-fluid mb-3"
+                         style="height:60px;"
+                         onerror="this.src='/images/wrognlogo.png'">
+
+                    <h5>WROGN</h5>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- SNITCH -->
+
+        <div class="col-6 col-md-4 col-lg-2">
+
+            <a th:href="@{/products(brand='SNITCH')}"
+               class="text-decoration-none text-dark d-block">
+
+                <div class="brand-card">
+
+                    <img src="/images/brands/snitch.png"
+                         class="img-fluid mb-3"
+                         style="height:60px;"
+                         onerror="this.src='/images/snitchl.png'">
+
+                    <h5>SNITCH</h5>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- Allen Solly -->
+
+        <div class="col-6 col-md-4 col-lg-2">
+
+            <a th:href="@{/products(brand='Allen Solly')}"
+               class="text-decoration-none text-dark d-block">
+
+                <div class="brand-card">
+
+                    <img src="/images/brands/allensolly.png"
+                         class="img-fluid mb-3"
+                         style="height:60px;"
+                         onerror="this.src='/images/allenlogo.png'">
+
+                    <h5>Allen Solly</h5>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- US Polo -->
+
+        <div class="col-6 col-md-4 col-lg-2">
+
+            <a th:href="@{/products(brand='US Polo')}"
+               class="text-decoration-none text-dark d-block">
+
+                <div class="brand-card">
+
+                    <img src="/images/brands/uspolo.png"
+                         class="img-fluid mb-3"
+                         style="height:60px;"
+                         onerror="this.src='/images/polologo.png'">
+
+                    <h5>US POLO</h5>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- PUMA -->
+
+        <div class="col-6 col-md-4 col-lg-2">
+
+            <a th:href="@{/products(brand='PUMA')}"
+               class="text-decoration-none text-dark d-block">
+
+                <div class="brand-card">
+
+                    <img src="/images/brands/puma.png"
+                         class="img-fluid mb-3"
+                         style="height:60px;"
+                         onerror="this.src='/images/pumalogo.png'">
+
+                    <h5>PUMA</h5>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- NIKE -->
+
+        <div class="col-6 col-md-4 col-lg-2">
+
+            <a th:href="@{/products(brand='NIKE')}"
+               class="text-decoration-none text-dark d-block">
+
+                <div class="brand-card">
+
+                    <img src="/images/brands/nike.png"
+                         class="img-fluid mb-3"
+                         style="height:60px;"
+                         onerror="this.src='/images/nikelogo.png'">
+
+                    <h5>NIKE</h5>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===========================
+        WHY CHOOSE US
+=========================== -->
+
+<section class="container my-5">
+
+    <div class="text-center mb-5">
+
+        <h2 class="section-title">
+
+            Why Choose SRIG ESSENSE
+
+        </h2>
+
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="feature-box">
+
+                <i class="fa-solid fa-shirt"></i>
+
+                <h5>Premium Quality</h5>
+
+                <p class="text-muted">
+
+                    Carefully selected premium fashion products.
 
                 </p>
 
             </div>
 
-            <div class="col-md-4">
+        </div>
 
-                <h5>
+        <div class="col-lg-3 col-md-6">
 
-                    Quick Links
+            <div class="feature-box">
 
-                </h5>
+                <i class="fa-solid fa-truck-fast"></i>
 
-                <a href="/home">
+                <h5>Fast Delivery</h5>
 
-                    Home
+                <p class="text-muted">
 
-                </a>
+                    Quick and secure delivery across India.
 
-                <a href="/products">
-
-                    Products
-
-                </a>
-
-                <a href="/wishlist">
-
-                    Wishlist
-
-                </a>
-
-                <a href="/cart">
-
-                    Cart
-
-                </a>
+                </p>
 
             </div>
 
-            <div class="col-md-4">
+        </div>
 
-                <h5>
+        <div class="col-lg-3 col-md-6">
 
-                    Follow Us
+            <div class="feature-box">
 
-                </h5>
+                <i class="fa-solid fa-rotate-left"></i>
 
-                <div class="social-icons">
+                <h5>Easy Returns</h5>
 
-                    <a href="#">
+                <p class="text-muted">
+
+                    Simple and hassle-free return process.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="feature-box">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <h5>Secure Payment</h5>
+
+                <p class="text-muted">
+
+                    100% secure payment gateway.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ===========================
+        NEWSLETTER
+=========================== -->
+
+<section class="container my-5">
+
+    <div class="row align-items-center bg-dark text-white rounded-4 p-5">
+
+        <div class="col-lg-6">
+
+            <h2 class="fw-bold">
+
+                Stay Updated
+
+            </h2>
+
+            <p>
+
+                Subscribe to receive the latest fashion arrivals,
+                exclusive offers and seasonal collections.
+
+            </p>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <form class="d-flex">
+
+                <input
+                        type="email"
+                        class="form-control me-2"
+                        placeholder="Enter your email">
+
+                <button
+                        class="btn btn-warning">
+
+                    Subscribe
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ===========================
+        FOOTER
+=========================== -->
+
+
+<footer class="footer bg-dark text-white pt-5">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+            <!-- BRAND -->
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="d-flex align-items-center mb-3">
+
+                    <img src="/images/srig-logo.png"
+                         alt="SRIG ESSENSE"
+                         style="width:55px;height:55px;border-radius:50%;object-fit:cover;"
+                         class="me-3">
+
+                    <div>
+
+                        <h4 class="fw-bold mb-0">
+                            SRIG ESSENSE
+                        </h4>
+
+                        <small class="text-secondary">
+                            Premium Men's Fashion
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <p class="text-secondary lh-lg">
+
+                    Elevate your everyday style with premium
+                    clothing, footwear and accessories designed
+                    for the modern man.
+
+                </p>
+
+                <div class="d-flex gap-3 mt-4">
+
+                    <a href="#"
+                       class="social-link"
+                       aria-label="Facebook">
 
                         <i class="fab fa-facebook-f"></i>
 
                     </a>
 
-                    <a href="#">
+                    <a href="#"
+                       class="social-link"
+                       aria-label="Instagram">
 
                         <i class="fab fa-instagram"></i>
 
                     </a>
 
-                    <a href="#">
+                    <a href="#"
+                       class="social-link"
+                       aria-label="YouTube">
 
-                        <i class="fab fa-x-twitter"></i>
+                        <i class="fab fa-youtube"></i>
 
                     </a>
 
-                    <a href="#">
+                    <a href="#"
+                       class="social-link"
+                       aria-label="X">
 
-                        <i class="fab fa-youtube"></i>
+                        <i class="fab fa-x-twitter"></i>
 
                     </a>
 
@@ -523,16 +1202,143 @@
 
             </div>
 
+
+            <!-- COMPANY -->
+
+            <div class="col-lg-2 col-md-6">
+
+                <h5 class="footer-title">
+                    Company
+                </h5>
+
+                <ul class="list-unstyled footer-links">
+
+                    <li>
+                        <a th:href="@{/about}">
+                            About Us
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/contact}">
+                            Contact Us
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/careers}">
+                            Careers
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- SUPPORT -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <h5 class="footer-title">
+                    Support
+                </h5>
+
+                <ul class="list-unstyled footer-links">
+
+                    <li>
+                        <a th:href="@{/privacy}">
+                            Privacy Policy
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/terms}">
+                            Terms & Conditions
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/shipping}">
+                            Shipping Policy
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/returns}">
+                            Return Policy
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- CUSTOMER SERVICE -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <h5 class="footer-title">
+                    Customer Service
+                </h5>
+
+                <p class="text-secondary mb-2">
+
+                    <i class="fa-solid fa-envelope me-2"></i>
+
+                    support@srigeessense.com
+
+                </p>
+
+                <p class="text-secondary mb-2">
+
+                    <i class="fa-solid fa-phone me-2"></i>
+
+                    +91 93926 94740
+
+                </p>
+
+                <p class="text-secondary">
+
+                    <i class="fa-solid fa-clock me-2"></i>
+
+                    Mon - Sat: 9:00 AM - 6:00 PM
+
+                </p>
+
+            </div>
+
         </div>
-                <hr>
 
-        <div class="text-center mt-4">
 
-            <p>
+        <hr class="border-secondary my-4">
 
-                © 2026 SRIG ESSENSE. All Rights Reserved.
 
-            </p>
+        <!-- BOTTOM -->
+
+        <div class="row align-items-center pb-4">
+
+            <div class="col-md-6 text-center text-md-start">
+
+                <p class="text-secondary mb-0">
+
+                    © 2026 SRIG ESSENSE.
+                    All Rights Reserved.
+
+                </p>
+
+            </div>
+
+            <div class="col-md-6 text-center text-md-end">
+
+                <span class="text-secondary">
+
+                    Premium Men's Fashion Store
+
+                </span>
+
+            </div>
 
         </div>
 

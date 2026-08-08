@@ -3,332 +3,326 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<title>My Account</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-rel="stylesheet">
+    <title>Dashboard | SRIG ESSENSE</title>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
 
-<style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          rel="stylesheet">
 
-body{
-    background:#f1f3f6;
-}
-
-.navbar{
-    background:#2874f0;
-}
-
-.left-menu{
-
-    background:white;
-    border-radius:10px;
-    padding:20px;
-    box-shadow:0 2px 8px rgba(0,0,0,.1);
-
-}
-
-.left-menu a{
-
-    display:block;
-    padding:12px;
-    color:#333;
-    text-decoration:none;
-    border-bottom:1px solid #eee;
-
-}
-
-.left-menu a:hover{
-
-    background:#2874f0;
-    color:white;
-    border-radius:5px;
-
-}
-
-.profile-card{
-
-    background:white;
-    border-radius:10px;
-    padding:25px;
-    box-shadow:0 2px 8px rgba(0,0,0,.1);
-
-}
-
-.info-card{
-
-    background:white;
-    border-radius:10px;
-    padding:20px;
-    text-align:center;
-    box-shadow:0 2px 8px rgba(0,0,0,.1);
-
-}
-
-.info-card i{
-
-    font-size:35px;
-    color:#2874f0;
-    margin-bottom:10px;
-
-}
-
-</style>
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
 
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark">
+<div class="dashboard-container">
 
-<div class="container">
+    <!-- SIDEBAR -->
 
-<a class="navbar-brand" href="/home">
+    <aside class="sidebar">
 
-<b>SRIG ESSENSE</b>
+        <div class="brand">
 
-</a>
+            <img src="/images/logo3.png"
+                 class="brand-logo"
+                 alt="Logo">
 
-<div>
+            <h2>
 
-<a href="/home" class="btn btn-light">
+                SRIG ESSENSE
 
-🏠 Home
-
-</a>
-
-</div>
-
-</div>
-
-</nav>
-
-<div class="container mt-4">
-
-<div class="row">
-
-<div class="col-md-3">
-
-<div class="left-menu">
-
-<h5 class="mb-3">
-
-<i class="fa-solid fa-user"></i>
-
-My Account
-
-</h5>
-
-<a href="/dashboard">
-
-🏠 Dashboard
-
-</a>
-
-<a href="/my-orders">📦 My Orders</a>
-
-<a href="/wishlist">
-
-❤️ Wishlist
-
-</a>
-
-<a href="/cart">
-
-🛒 Cart
-
-</a>
-
-<a href="/contact">
-
-📞 Contact Us
-
-</a>
-
-<a href="/logout">
-
-🚪 Logout
-
-</a>
-
-</div>
-
-</div>
-
-<div class="col-md-9">
-
-<div class="profile-card mb-4">
-
-    <div class="d-flex align-items-center">
-
-        <div class="me-4">
-
-            <img th:if="${user.profileImage != null and !#strings.isEmpty(user.profileImage)}"
-                 th:src="@{'/images/profile/' + ${user.profileImage}}"
-                 style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #2874f0;">
-
-            <img th:if="${user.profileImage == null or #strings.isEmpty(user.profileImage)}"
-                 th:src="@{/images/profile/default.png}"
-                 style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #2874f0;">
+            </h2>
 
         </div>
 
-        <div>
+        <ul class="menu">
 
-            <h3>
-                Hello,
-                <span th:text="${user.name}"></span> 👋
-            </h3>
+            <li>
+
+                <a href="/home"
+                   class="active">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/profile">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    My Profile
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/my-orders">
+
+                    <i class="fa-solid fa-box"></i>
+
+                    My Orders
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/wishlist">
+
+                    <i class="fa-solid fa-heart"></i>
+
+                    Wishlist
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/cart">
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    My Cart
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/change-password">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    Change Password
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/logout">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    Logout
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+        <div class="welcome-card">
+
+            <img src="/images/logo3.png"
+                 class="profile-logo"
+                 alt="Logo">
+
+            <h2>
+
+                Welcome,
+
+                <span th:text="${user.name}">
+
+                    User
+
+                </span>
+
+                👋
+
+            </h2>
 
             <p>
-                <strong>Mobile:</strong>
-                <span th:text="${user.mobile}"></span>
-            </p>
 
-            <p>
-                <strong>Email:</strong>
+                <i class="fa-solid fa-envelope"></i>
+
                 <span th:text="${user.email}"></span>
+
+            </p>
+
+            <p>
+
+                <i class="fa-solid fa-mobile-screen-button"></i>
+
+                <span th:text="${user.mobile}"></span>
+
             </p>
 
         </div>
 
-    </div>
+        <div class="dashboard-grid">
+                    <!-- MY PROFILE -->
+
+        <a href="/profile" class="dashboard-card">
+
+            <i class="fa-solid fa-user"></i>
+
+            <h4>
+
+                My Profile
+
+            </h4>
+
+            <p>
+
+                View & update your personal information.
+
+            </p>
+
+        </a>
+
+        <!-- MY ORDERS -->
+
+        <a href="/my-orders" class="dashboard-card">
+
+            <i class="fa-solid fa-box"></i>
+
+            <h4>
+
+                My Orders
+
+            </h4>
+
+            <p>
+
+                Track and manage your orders.
+
+            </p>
+
+        </a>
+
+        <!-- WISHLIST -->
+
+        <a href="/wishlist" class="dashboard-card">
+
+            <i class="fa-solid fa-heart"></i>
+
+            <h4>
+
+                Wishlist
+
+            </h4>
+
+            <p>
+
+                View your saved favourite products.
+
+            </p>
+
+        </a>
+
+        <!-- CART -->
+
+        <a href="/cart" class="dashboard-card">
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            <h4>
+
+                My Cart
+
+            </h4>
+
+            <p>
+
+                Review products before checkout.
+
+            </p>
+
+        </a>
+
+        <!-- SAVED ADDRESSES -->
+
+        <a href="/addresses" class="dashboard-card">
+
+            <i class="fa-solid fa-location-dot"></i>
+
+            <h4>
+
+                Saved Addresses
+
+            </h4>
+
+            <p>
+
+                Manage your delivery addresses.
+
+            </p>
+
+        </a>
+
+        <!-- CHANGE PASSWORD -->
+
+        <a href="/change-password" class="dashboard-card">
+
+            <i class="fa-solid fa-lock"></i>
+
+            <h4>
+
+                Change Password
+
+            </h4>
+
+            <p>
+
+                Update your account password securely.
+
+            </p>
+
+        </a>
+
+        <!-- LOGOUT -->
+
+        <a href="/logout" class="dashboard-card logout-card">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            <h4>
+
+                Logout
+
+            </h4>
+
+            <p>
+
+                Sign out from your account.
+
+            </p>
+
+        </a>
+                </div>
+
+    </main>
 
 </div>
 
-<div class="row">
-
-<div class="col-md-4 mb-3">
-
-<div class="info-card">
-
-<i class="fa-solid fa-box"></i>
-
-<h5>Orders</h5>
-
-<p>View all orders</p>
-
-<a href="/my-orders" class="btn btn-primary btn-sm">Open</a>
-</div>
-
-</div>
-
-<div class="col-md-4 mb-3">
-
-<div class="info-card">
-
-<i class="fa-solid fa-heart"></i>
-
-<h5>Wishlist</h5>
-
-<p>Your favourite items</p>
-
-<a href="/wishlist"
-class="btn btn-danger btn-sm">
-
-Open
-
-</a>
-
-</div>
-
-</div>
-
-<div class="col-md-4 mb-3">
-
-<div class="info-card">
-
-<i class="fa-solid fa-cart-shopping"></i>
-
-<h5>Cart</h5>
-
-<p>Items in cart</p>
-
-<a href="/cart"
-class="btn btn-success btn-sm">
-
-Open
-
-</a>
-
-</div>
-
-</div>
-
-<div class="col-md-4 mb-3">
-
-<div class="info-card">
-
-<i class="fa-solid fa-headset"></i>
-
-<h5>Support</h5>
-
-<p>Need help?</p>
-
-<a href="/contact"
-class="btn btn-warning btn-sm">
-
-Contact
-
-</a>
-
-</div>
-
-</div>
-
-<div class="col-md-4 mb-3">
-
-<div class="info-card">
-
-<i class="fa-solid fa-lock"></i>
-
-
-<h5>My Profile</h5>
-
-<p>View & Update Profile</p>
-
-<a href="/profile"
-class="btn btn-secondary btn-sm">
-
-Open
-
-</a>
-</div>
-
-</div>
-
-<div class="col-md-4 mb-3">
-
-<div class="info-card">
-
-<i class="fa-solid fa-right-from-bracket"></i>
-
-<h5>Logout</h5>
-
-<p>Exit account</p>
-
-<a href="/logout"
-class="btn btn-dark btn-sm">
-
-Logout
-
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+<script th:src="@{/js/dashboard.js}"></script>
 
 </body>
 

@@ -1,0 +1,505 @@
+
+/* ===========================
+   GLOBAL
+=========================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: #f5f7fb;
+}
+
+
+/* ===========================
+   DASHBOARD CONTAINER
+=========================== */
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+
+/* ===========================
+   SIDEBAR
+=========================== */
+
+.sidebar {
+    width: 270px;
+
+    background: #1f2937;
+
+    color: #fff;
+
+    padding: 30px 20px;
+
+    position: fixed;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    overflow-y: auto;
+}
+
+.brand {
+    text-align: center;
+
+    margin-bottom: 40px;
+}
+
+.brand-logo {
+    width: 80px;
+
+    height: 80px;
+
+    object-fit: contain;
+
+    margin-bottom: 15px;
+}
+
+.brand h2 {
+    font-size: 22px;
+
+    font-weight: 700;
+
+    margin: 0;
+}
+
+
+/* ===========================
+   MENU
+=========================== */
+
+.menu {
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+}
+
+.menu li {
+    margin-bottom: 15px;
+}
+
+.menu a {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    text-decoration: none;
+
+    color: #d1d5db;
+
+    padding: 14px 16px;
+
+    border-radius: 10px;
+
+    transition: 0.3s;
+
+    font-size: 16px;
+}
+
+.menu a:hover,
+.menu a.active {
+    background: #2563eb;
+
+    color: #fff;
+}
+
+.menu i {
+    width: 22px;
+
+    text-align: center;
+}
+
+
+/* ===========================
+   MAIN CONTENT
+=========================== */
+
+.main-content {
+    margin-left: 270px;
+
+    width: calc(100% - 270px);
+
+    min-height: 100vh;
+
+    padding: 40px;
+}
+
+
+/* ===========================
+   WELCOME CARD
+   Kept for other dashboard pages
+=========================== */
+
+.welcome-card {
+    background: #fff;
+
+    border-radius: 18px;
+
+    padding: 35px;
+
+    text-align: center;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+    margin-bottom: 35px;
+}
+
+.profile-logo {
+    width: 90px;
+
+    height: 90px;
+
+    object-fit: contain;
+
+    margin-bottom: 15px;
+}
+
+.welcome-card h2 {
+    margin-bottom: 15px;
+
+    color: #222;
+}
+
+.welcome-card p {
+    margin-bottom: 8px;
+
+    color: #555;
+
+    font-size: 15px;
+}
+
+.welcome-card i {
+    color: #2563eb;
+
+    margin-right: 8px;
+}
+
+
+/* ===========================
+   PROFILE CARD
+=========================== */
+
+.profile-card {
+    width: 100%;
+
+    max-width: 850px;
+
+    margin: 30px auto;
+
+    background: #fff;
+
+    border-radius: 18px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ===========================
+   PROFILE IMAGE
+=========================== */
+
+.profile-image-wrapper {
+    width: 150px;
+
+    height: 150px;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    border: 4px solid #f1f1f1;
+
+    background: #f8f9fa;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.profile-image {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.image-upload-label {
+    cursor: pointer;
+}
+
+
+/* ===========================
+   FORM
+=========================== */
+
+.profile-card .form-label {
+    font-weight: 600;
+
+    color: #333;
+}
+
+.profile-card .form-control {
+    border-radius: 10px;
+
+    padding: 12px 14px;
+
+    border: 1px solid #ddd;
+}
+
+.profile-card .form-control:focus {
+    border-color: #2563eb;
+
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.12);
+}
+
+
+/* ===========================
+   PROFILE BUTTONS
+=========================== */
+
+.profile-card .btn {
+    border-radius: 8px;
+
+    padding: 10px 18px;
+}
+
+
+/* ===========================
+   DASHBOARD GRID
+=========================== */
+
+.dashboard-grid {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+    gap: 25px;
+}
+
+
+/* ===========================
+   DASHBOARD CARD
+=========================== */
+
+.dashboard-card {
+    background: #fff;
+
+    border-radius: 18px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    color: #222;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+    transition: 0.3s;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-8px);
+
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+
+    color: #2563eb;
+}
+
+.dashboard-card i {
+    font-size: 42px;
+
+    margin-bottom: 15px;
+
+    color: #2563eb;
+}
+
+.dashboard-card h4 {
+    margin-bottom: 10px;
+
+    font-size: 20px;
+
+    font-weight: 600;
+}
+
+.dashboard-card p {
+    color: #666;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* ===========================
+   LOGOUT
+=========================== */
+
+.logout-card i {
+    color: #dc2626;
+}
+
+.logout-card:hover {
+    color: #dc2626;
+}
+
+
+/* ===========================
+   RESPONSIVE - TABLET
+=========================== */
+
+@media (max-width: 991px) {
+
+    .sidebar {
+        width: 100%;
+
+        position: relative;
+
+        height: auto;
+
+        min-height: auto;
+    }
+
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .main-content {
+        margin-left: 0;
+
+        width: 100%;
+
+        padding: 20px;
+    }
+
+    .menu {
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 10px;
+    }
+
+    .menu li {
+        margin-bottom: 0;
+    }
+
+    .profile-card {
+        max-width: 850px;
+
+        margin: 20px auto;
+    }
+}
+
+
+/* ===========================
+   RESPONSIVE - MOBILE
+=========================== */
+
+@media (max-width: 576px) {
+
+    .sidebar {
+        padding: 20px 15px;
+    }
+
+    .brand {
+        margin-bottom: 25px;
+    }
+
+    .brand-logo {
+        width: 65px;
+
+        height: 65px;
+    }
+
+    .brand h2 {
+        font-size: 19px;
+    }
+
+    .menu {
+        grid-template-columns: 1fr;
+    }
+
+    .menu a {
+        padding: 12px 14px;
+
+        font-size: 15px;
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+
+    .welcome-card {
+        padding: 25px;
+
+        margin-bottom: 20px;
+    }
+
+    .dashboard-card {
+        padding: 25px;
+    }
+
+    .profile-card {
+        width: 100%;
+
+        margin: 15px auto;
+
+        padding: 20px !important;
+    }
+
+    .profile-image-wrapper {
+        width: 125px;
+
+        height: 125px;
+    }
+
+    .profile-card .btn {
+        width: 100%;
+
+        margin: 5px 0 !important;
+    }
+
+}
+
+
+/* ===========================
+   VERY SMALL SCREENS
+=========================== */
+
+@media (max-width: 400px) {
+
+    .main-content {
+        padding: 10px;
+    }
+
+    .profile-card {
+        padding: 15px !important;
+    }
+
+    .profile-image-wrapper {
+        width: 110px;
+
+        height: 110px;
+    }
+
+}
+

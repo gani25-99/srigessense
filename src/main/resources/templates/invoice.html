@@ -1,324 +1,1689 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<title>SRIG Invoice</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet">
+    <title>
+        Invoice | SRIG ESSENSE
+    </title>
 
-<style>
 
-body{
-    background:#f5f5f5;
-}
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet">
 
-.invoice{
-    max-width:950px;
-    margin:30px auto;
-    background:white;
-    padding:40px;
-    border:1px solid #ddd;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
 
-.header{
-    border-bottom:3px solid #0d6efd;
-    padding-bottom:20px;
-    margin-bottom:25px;
-}
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+            rel="stylesheet">
 
-.logo{
-    width:90px;
-}
 
-.table td,
-.table th{
-    vertical-align:middle;
-}
+    <style>
 
-.footer{
-    border-top:2px solid #ddd;
-    margin-top:30px;
-    padding-top:20px;
-    text-align:center;
-    color:gray;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-</style>
+
+        body {
+
+            margin: 0;
+
+            padding: 30px 0;
+
+            background: #e8e5de;
+
+            font-family:
+                    Arial,
+                    Helvetica,
+                    sans-serif;
+
+            color: #222;
+        }
+
+
+        /* =====================================================
+           INVOICE
+           ===================================================== */
+
+        .invoice-page {
+
+            width: 210mm;
+
+            min-height: 297mm;
+
+            margin: auto;
+
+            padding: 18mm;
+
+            position: relative;
+
+            overflow: hidden;
+
+            background: #faf8f2;
+
+            box-shadow:
+                    0 10px 35px
+                    rgba(0,0,0,.15);
+        }
+
+
+        /* =====================================================
+           REPEATED WATERMARK
+           ===================================================== */
+
+        .watermark-layer {
+
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            z-index: 0;
+
+            pointer-events: none;
+
+            overflow: hidden;
+        }
+
+
+        .watermark {
+
+            position: absolute;
+
+            width: 125px;
+
+            height: 125px;
+
+            object-fit: contain;
+
+            opacity: .035;
+
+            filter: grayscale(100%);
+        }
+
+
+        .wm1 {
+            top: 55px;
+            left: 45px;
+            transform: rotate(-10deg);
+        }
+
+
+        .wm2 {
+            top: 65px;
+            right: 45px;
+            transform: rotate(10deg);
+        }
+
+
+        .wm3 {
+            top: 360px;
+            left: 45px;
+            transform: rotate(8deg);
+        }
+
+
+        .wm4 {
+            top: 390px;
+            left: 50%;
+            transform:
+                    translateX(-50%)
+                    rotate(-8deg);
+        }
+
+
+        .wm5 {
+            top: 360px;
+            right: 45px;
+            transform: rotate(10deg);
+        }
+
+
+        .wm6 {
+            bottom: 260px;
+            left: 45px;
+            transform: rotate(-10deg);
+        }
+
+
+        .wm7 {
+            bottom: 250px;
+            right: 45px;
+            transform: rotate(10deg);
+        }
+
+
+        .wm8 {
+            bottom: 45px;
+            left: 50%;
+            transform:
+                    translateX(-50%)
+                    rotate(-5deg);
+        }
+
+
+        /* =====================================================
+           CONTENT
+           ===================================================== */
+
+        .invoice-content {
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        .invoice-header {
+
+            display: flex;
+
+            justify-content:
+                    space-between;
+
+            align-items:
+                    flex-start;
+
+            padding-bottom: 16px;
+        }
+
+
+        .brand-section {
+
+            width: 55%;
+        }
+
+
+        .brand-logo {
+
+            width: 100px;
+
+            height: 75px;
+
+            object-fit: contain;
+        }
+
+
+        .brand-name {
+
+            margin-top: 5px;
+
+            font-family:
+                    Georgia,
+                    serif;
+
+            font-size: 25px;
+
+            letter-spacing: 5px;
+
+            font-weight: 600;
+        }
+
+
+        .tagline {
+
+            margin-top: 4px;
+
+            font-size: 9px;
+
+            letter-spacing: 4px;
+
+            color: #9b7736;
+        }
+
+
+        .company-details {
+
+            margin-top: 9px;
+
+            font-size: 9px;
+
+            line-height: 1.7;
+
+            color: #555;
+        }
+
+
+        .invoice-title-section {
+
+            width: 40%;
+
+            text-align: right;
+        }
+
+
+        .invoice-title {
+
+            font-family:
+                    Georgia,
+                    serif;
+
+            font-size: 30px;
+
+            letter-spacing: 7px;
+
+            color: #9b7736;
+
+            margin-bottom: 12px;
+        }
+
+
+        .invoice-meta {
+
+            font-size: 9px;
+
+            line-height: 2;
+        }
+
+
+        .invoice-meta strong {
+
+            display: inline-block;
+
+            min-width: 85px;
+
+            text-align: left;
+        }
+
+
+        .gold-line {
+
+            width: 100%;
+
+            height: 1px;
+
+            background: #b49761;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =====================================================
+           ADDRESS
+           ===================================================== */
+
+        .address-row {
+
+            display: grid;
+
+            grid-template-columns:
+                    1fr 1fr;
+
+            gap: 30px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .section-title {
+
+            color: #9b7736;
+
+            font-size: 9px;
+
+            letter-spacing: 3px;
+
+            font-weight: 600;
+
+            margin-bottom: 10px;
+        }
+
+
+        .customer-name {
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-bottom: 7px;
+        }
+
+
+        .address-text {
+
+            font-size: 9px;
+
+            line-height: 1.8;
+
+            color: #444;
+        }
+
+
+        /* =====================================================
+           PRODUCTS
+           ===================================================== */
+
+        .products-title {
+
+            color: #9b7736;
+
+            font-size: 9px;
+
+            letter-spacing: 3px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .product-table {
+
+            width: 100%;
+
+            border-collapse:
+                    collapse;
+
+            margin-bottom: 8px;
+        }
+
+
+        .product-table th {
+
+            background: #1d1d1b;
+
+            color: #e4c77d;
+
+            font-size: 8px;
+
+            letter-spacing: 1.5px;
+
+            padding: 9px 7px;
+
+            text-align: left;
+        }
+
+
+        .product-table th:nth-child(n+2) {
+
+            text-align: right;
+        }
+
+
+        .product-table td {
+
+            padding: 9px 7px;
+
+            border-bottom:
+                    1px solid #ddd7ca;
+
+            font-size: 9px;
+        }
+
+
+        .product-table td:nth-child(n+2) {
+
+            text-align: right;
+        }
+
+
+        .product-name {
+
+            font-weight: 600;
+        }
+
+
+        .qty-badge {
+
+            display: inline-block;
+
+            min-width: 24px;
+
+            padding: 3px 7px;
+
+            text-align: center;
+
+            border-radius: 12px;
+
+            background: #1d1d1b;
+
+            color: white;
+
+            font-size: 8px;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+           ===================================================== */
+
+        .summary-wrapper {
+
+            display: flex;
+
+            justify-content:
+                    flex-end;
+
+            margin-top: 7px;
+        }
+
+
+        .summary {
+
+            width: 43%;
+        }
+
+
+        .summary-row {
+
+            display: flex;
+
+            justify-content:
+                    space-between;
+
+            padding: 4px 6px;
+
+            font-size: 9px;
+        }
+
+
+        .grand-total {
+
+            margin-top: 4px;
+
+            padding: 9px 7px;
+
+            display: flex;
+
+            justify-content:
+                    space-between;
+
+            background: #e8dfcd;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           DETAILS
+           ===================================================== */
+
+        .details-row {
+
+            display: grid;
+
+            grid-template-columns:
+                    1fr 1fr;
+
+            gap: 18px;
+
+            margin-top: 16px;
+        }
+
+
+        .info-card {
+
+            padding: 10px;
+
+            border-top:
+                    1px solid #c9b487;
+        }
+
+
+        .info-card p {
+
+            margin: 5px 0;
+
+            font-size: 8.5px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           STATUS
+           ===================================================== */
+
+        .status {
+
+            display: inline-block;
+
+            padding: 3px 8px;
+
+            border-radius: 12px;
+
+            font-size: 7.5px;
+
+            font-weight: 600;
+        }
+
+
+        .status-pending {
+
+            background: #fff0c2;
+
+            color: #765700;
+        }
+
+
+        .status-confirmed {
+
+            background: #dce9ff;
+
+            color: #1d4f91;
+        }
+
+
+        .status-packed {
+
+            background: #d9f4fa;
+
+            color: #126578;
+        }
+
+
+        .status-shipped {
+
+            background: #e4e4e4;
+
+            color: #444;
+        }
+
+
+        .status-delivered {
+
+            background: #d9f2df;
+
+            color: #176b32;
+        }
+
+
+        .status-cancelled {
+
+            background: #f8d7da;
+
+            color: #842029;
+        }
+
+
+        /* =====================================================
+           THANK YOU / SIGNATURE
+           ===================================================== */
+
+        .bottom-section {
+
+            display: grid;
+
+            grid-template-columns:
+                    1.5fr 1fr;
+
+            gap: 25px;
+
+            margin-top: 17px;
+
+            padding-top: 11px;
+
+            border-top:
+                    1px solid #c9b487;
+        }
+
+
+        .thank-you h4 {
+
+            margin: 0;
+
+            font-family:
+                    Georgia,
+                    serif;
+
+            letter-spacing: 2px;
+
+            font-size: 11px;
+        }
+
+
+        .thank-you .brand {
+
+            color: #9b7736;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            letter-spacing: 4px;
+
+            margin-top: 4px;
+        }
+
+
+        .thank-you .own-style {
+
+            color: #9b7736;
+
+            font-size: 7px;
+
+            letter-spacing: 4px;
+
+            margin-top: 3px;
+        }
+
+
+        .support {
+
+            margin-top: 8px;
+
+            color: #666;
+
+            font-size: 8px;
+
+            line-height: 1.6;
+        }
+
+
+        .signature-section {
+
+            text-align: center;
+        }
+
+
+        .signature-title {
+
+            color: #9b7736;
+
+            font-size: 8px;
+
+            letter-spacing: 2px;
+
+            font-weight: 600;
+        }
+
+
+        .signature-image {
+
+            width: 135px;
+
+            height: 65px;
+
+            object-fit: contain;
+
+            margin-top: 2px;
+
+            transform:
+                    rotate(-8deg);
+        }
+
+
+        .signature-name {
+
+            font-size: 8px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .invoice-footer {
+
+            margin-top: 9px;
+
+            padding-top: 7px;
+
+            border-top:
+                    1px solid #b49761;
+
+            text-align: center;
+
+            font-size: 7px;
+
+            color: #777;
+
+            line-height: 1.5;
+        }
+
+
+        .footer-brand {
+
+            letter-spacing: 4px;
+
+            color: #9b7736;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+           ===================================================== */
+
+        .action-buttons {
+
+            width: 210mm;
+
+            margin: 18px auto;
+
+            text-align: center;
+        }
+
+
+        .action-buttons .btn {
+
+            margin: 3px;
+        }
+
+
+        /* =====================================================
+           PRINT
+           ===================================================== */
+
+        @media print {
+
+            body {
+
+                background:
+                        #faf8f2;
+
+                padding: 0;
+            }
+
+
+            .invoice-page {
+
+                width: 210mm;
+
+                min-height: 297mm;
+
+                margin: 0;
+
+                box-shadow: none;
+            }
+
+
+            .action-buttons {
+
+                display: none;
+            }
+
+
+            @page {
+
+                size: A4;
+
+                margin: 0;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media(max-width: 900px) {
+
+            body {
+
+                padding: 0;
+            }
+
+
+            .invoice-page {
+
+                width: 100%;
+
+                min-height: auto;
+
+                padding: 25px;
+            }
+
+
+            .invoice-header {
+
+                flex-direction: column;
+            }
+
+
+            .brand-section,
+            .invoice-title-section {
+
+                width: 100%;
+            }
+
+
+            .invoice-title-section {
+
+                margin-top: 20px;
+
+                text-align: left;
+            }
+
+
+            .address-row,
+            .details-row,
+            .bottom-section {
+
+                grid-template-columns:
+                        1fr;
+            }
+
+
+            .summary {
+
+                width: 100%;
+            }
+
+
+            .action-buttons {
+
+                width: 100%;
+            }
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
-<div class="invoice">
 
-    <!-- Header -->
-    <div class="row header">
+<div class="invoice-page">
 
-        <div class="col-md-2">
 
-            <img th:src="@{/images/logo.png}"
-                 class="logo"
-                 alt="SRIG Logo">
+    <!-- =====================================================
+         REPEATED SRIG BACKGROUND
+         ===================================================== -->
 
-        </div>
+    <div class="watermark-layer">
 
-        <div class="col-md-6">
+        <img
+                src="/images/srig-logo.png"
+                class="watermark wm1"
+                alt="SRIG">
 
-            <h2>SRIG</h2>
+        <img
+                src="/images/srig-logo.png"
+                class="watermark wm2"
+                alt="SRIG">
 
-            <h5>Own Your Style</h5>
+        <img
+                src="/images/srig-logo.png"
+                class="watermark wm3"
+                alt="SRIG">
 
-            <p>
-                Kalyandurg,<br>
-                Ananthapur,<br>
-                Andhra Pradesh - 515761
-            </p>
+        <img
+                src="/images/srig-logo.png"
+                class="watermark wm4"
+                alt="SRIG">
 
-            <p>
-                <b>Mobile :</b> +91 9392694740
-            </p>
+        <img
+                src="/images/srig-logo.png"
+                class="watermark wm5"
+                alt="SRIG">
 
-            <p>
-                <b>Email :</b> support@srig.com
-            </p>
+        <img
+                src="/images/srig-logo.png"
+                class="watermark wm6"
+                alt="SRIG">
 
-        </div>
+        <img
+                src="/images/srig-logo.png"
+                class="watermark wm7"
+                alt="SRIG">
 
-        <div class="col-md-4 text-end">
-
-            <h3>INVOICE</h3>
-
-            <p>
-                <b>Invoice No :</b>
-                INV-<span th:text="${order.id}"></span>
-            </p>
-
-            <p>
-                <b>Order ID :</b>
-                <span th:text="${order.id}"></span>
-            </p>
-
-            <p>
-                <b>Date :</b>
-                <span th:text="${#temporals.format(#temporals.createNow(),'dd-MM-yyyy')}"></span>
-            </p>
-
-        </div>
+        <img
+                src="/images/srig-logo.png"
+                class="watermark wm8"
+                alt="SRIG">
 
     </div>
 
-    <!-- Addresses -->
 
-    <div class="row">
+    <div class="invoice-content">
 
-        <div class="col-md-6">
 
-            <h5>Billing Address</h5>
+        <!-- =================================================
+             HEADER
+             ================================================= -->
 
-            <hr>
+        <div class="invoice-header">
 
-            <p><b>Name :</b>
-                <span th:text="${order.customerName}"></span>
-            </p>
 
-            <p><b>Mobile :</b>
-                <span th:text="${order.mobile}"></span>
-            </p>
+            <div class="brand-section">
 
-            <p><b>Address :</b>
-                <span th:text="${order.address}"></span>
-            </p>
 
-            <p><b>City :</b>
-                <span th:text="${order.city}"></span>
-            </p>
+                <img
+                        src="/images/srig-logo.png"
+                        class="brand-logo"
+                        alt="SRIG ESSENSE">
 
-            <p><b>Pincode :</b>
-                <span th:text="${order.pincode}"></span>
-            </p>
 
-        </div>
+                <div class="brand-name">
 
-        <div class="col-md-6">
+                    SRIG ESSENSE
 
-            <h5>Shipping Address</h5>
+                </div>
 
-            <hr>
 
-            <p><b>Name :</b>
-                <span th:text="${order.customerName}"></span>
-            </p>
+                <div class="tagline">
 
-            <p><b>Mobile :</b>
-                <span th:text="${order.mobile}"></span>
-            </p>
+                    OWN YOUR STYLE
 
-            <p><b>Address :</b>
-                <span th:text="${order.address}"></span>
-            </p>
+                </div>
 
-            <p><b>City :</b>
-                <span th:text="${order.city}"></span>
-            </p>
 
-            <p><b>Pincode :</b>
-                <span th:text="${order.pincode}"></span>
-            </p>
+                <div class="company-details">
 
-        </div>
+                    Kalyandurg, Ananthapur
+                    <br>
 
-    </div>
+                    Andhra Pradesh - 515761
+                    <br>
 
-    <br>
+                    +91 9392694740
+                    <br>
 
-    <!-- Product Table -->
+                    support@srigessense.com
+                    <br>
 
-    <h4>Products</h4>
+                    www.srig.com
 
-    <table class="table table-bordered table-striped">
+                </div>
 
-        <thead class="table-primary">
+            </div>
 
-        <tr>
 
-            <th>#</th>
+            <div class="invoice-title-section">
 
-            <th>Product Name</th>
 
-            <th>Quantity</th>
+                <div class="invoice-title">
 
-            <th>Unit Price</th>
+                    INVOICE
 
-            <th>Total</th>
+                </div>
 
-        </tr>
 
-        </thead>
+                <div class="invoice-meta">
 
-        <tbody>
+                    <div>
 
-        <tr th:each="item, stat : ${items}">
+                        <strong>
+                            Invoice No :
+                        </strong>
 
-            <td th:text="${stat.count}"></td>
+                        <span
+                                th:text="'INV-' + ${order.id}">
+                        </span>
 
-            <td th:text="${item.product.name}"></td>
+                    </div>
 
-            <td th:text="${item.quantity}"></td>
 
-            <td>
-                ₹ <span th:text="${item.price}"></span>
-            </td>
+                    <div>
 
-            <td>
-                ₹ <span th:text="${item.price * item.quantity}"></span>
-            </td>
+                        <strong>
+                            Order ID :
+                        </strong>
 
-        </tr>
+                        <span
+                                th:text="${order.id}">
+                        </span>
 
-        </tbody>
+                    </div>
 
-        <tfoot>
 
-        <tr>
+                    <div>
 
-            <th colspan="4" class="text-end">
+                        <strong>
+                            Date :
+                        </strong>
 
-                Grand Total
+                        <span
+                                th:text="${order.placedAt}">
+                        </span>
 
-            </th>
+                    </div>
 
-            <th>
+                </div>
 
-                ₹ <span th:text="${order.totalAmount}"></span>
-
-            </th>
-
-        </tr>
-
-        </tfoot>
-
-    </table>
-
-    <!-- Status -->
-
-    <div class="row mt-4">
-
-        <div class="col-md-6">
-
-            <h5>Payment Status</h5>
-
-            <span class="badge bg-success">
-                PAID
-            </span>
+            </div>
 
         </div>
 
-        <div class="col-md-6 text-end">
 
-            <h5>Order Status</h5>
+        <div class="gold-line"></div>
 
-            <span class="badge bg-primary"
-                  th:text="${order.status}">
-            </span>
+
+        <!-- =================================================
+             ADDRESS
+             ================================================= -->
+
+        <div class="address-row">
+
+
+            <div>
+
+
+                <div class="section-title">
+
+                    BILLING ADDRESS
+
+                </div>
+
+
+                <div class="customer-name"
+                     th:text="${order.customerName}">
+                </div>
+
+
+                <div class="address-text">
+
+                    <b>Email :</b>
+
+                    <span
+                            th:text="${order.email}">
+                    </span>
+
+                    <br>
+
+
+                    <b>Mobile :</b>
+
+                    <span
+                            th:text="${order.mobile}">
+                    </span>
+
+                    <br>
+
+
+                    <b>Address :</b>
+
+                    <span
+                            th:text="${order.address}">
+                    </span>
+
+                    <br>
+
+
+                    <span
+                            th:text="${order.city}">
+                    </span>
+
+                    -
+
+                    <span
+                            th:text="${order.pincode}">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+
+                <div class="section-title">
+
+                    SHIPPING ADDRESS
+
+                </div>
+
+
+                <div class="customer-name"
+                     th:text="${order.customerName}">
+                </div>
+
+
+                <div class="address-text">
+
+                    <b>Mobile :</b>
+
+                    <span
+                            th:text="${order.mobile}">
+                    </span>
+
+                    <br>
+
+
+                    <b>Address :</b>
+
+                    <span
+                            th:text="${order.address}">
+                    </span>
+
+                    <br>
+
+
+                    <span
+                            th:text="${order.city}">
+                    </span>
+
+                    -
+
+                    <span
+                            th:text="${order.pincode}">
+                    </span>
+
+                </div>
+
+            </div>
 
         </div>
 
-    </div>
 
-    <!-- Buttons -->
+        <!-- =================================================
+             PRODUCTS
+             ================================================= -->
 
-    <div class="text-center mt-4">
+        <div class="products-title">
 
-        <button
-                class="btn btn-success"
-                onclick="window.print()">
+            ORDERED PRODUCTS
 
-            Print Invoice
+        </div>
 
-        </button>
 
-        <a th:href="@{/invoice/pdf/{id}(id=${order.id})}"
-           class="btn btn-danger">
+        <table class="product-table">
 
-            Download PDF
 
-        </a>
+            <thead>
 
-        <a href="/my-orders"
-           class="btn btn-secondary">
+            <tr>
 
-            Back
+                <th>
+                    PRODUCT
+                </th>
 
-        </a>
+                <th>
+                    PRICE
+                </th>
 
-    </div>
+                <th>
+                    QTY
+                </th>
 
-    <!-- Footer -->
+                <th>
+                    TOTAL
+                </th>
 
-    <div class="footer">
+            </tr>
 
-        <h5>
+            </thead>
 
-            Thank You for Shopping with
-            <b>SRIG - Own Your Style</b>
 
-        </h5>
+            <tbody>
 
-        <p>
 
-            This is a computer-generated invoice.
-            No signature required.
+            <tr
+                    th:each="item : ${items}">
 
-        </p>
+
+                <td>
+
+                    <span
+                            class="product-name"
+                            th:text="${item.product.name}">
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    ₹
+
+                    <span
+                            th:text="${#numbers.formatDecimal(item.price,1,2)}">
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <span
+                            class="qty-badge"
+                            th:text="${item.quantity}">
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    ₹
+
+                    <span
+                            th:text="${#numbers.formatDecimal(item.price * item.quantity,1,2)}">
+                    </span>
+
+                </td>
+
+            </tr>
+
+
+            </tbody>
+
+        </table>
+
+
+        <!-- =================================================
+             SUMMARY
+             ================================================= -->
+
+        <div class="summary-wrapper">
+
+
+            <div class="summary">
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <span>
+
+                        ₹
+
+                        <span
+                                th:text="${#numbers.formatDecimal(order.totalAmount,1,2)}">
+                        </span>
+
+                    </span>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Delivery Charges
+                    </span>
+
+                    <span>
+                        FREE
+                    </span>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        GST
+                    </span>
+
+                    <span>
+                        Included
+                    </span>
+
+                </div>
+
+
+                <div class="grand-total">
+
+                    <span>
+                        GRAND TOTAL
+                    </span>
+
+                    <span>
+
+                        ₹
+
+                        <span
+                                th:text="${#numbers.formatDecimal(order.totalAmount,1,2)}">
+                        </span>
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PAYMENT / DELIVERY
+             ================================================= -->
+
+        <div class="details-row">
+
+
+            <div class="info-card">
+
+
+                <div class="section-title">
+
+                    PAYMENT DETAILS
+
+                </div>
+
+
+                <p>
+
+                    <b>
+                        Payment Method :
+                    </b>
+
+                    <span
+                            th:text="${order.paymentMethod}">
+                    </span>
+
+                </p>
+
+
+                <p>
+
+                    <b>
+                        Payment Status :
+                    </b>
+
+
+                    <span
+                            class="status"
+
+                            th:classappend="
+
+                            ${order.paymentStatus == 'PAID'}
+                            ? ' status-delivered' :
+
+                            ${order.paymentStatus == 'PENDING'}
+                            ? ' status-pending' :
+
+                            ' status-cancelled'"
+
+                            th:text="${order.paymentStatus}">
+
+                    </span>
+
+                </p>
+
+
+                <p
+                        th:if="${order.transactionId != null}">
+
+                    <b>
+                        Transaction ID :
+                    </b>
+
+                    <span
+                            th:text="${order.transactionId}">
+                    </span>
+
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+
+                <div class="section-title">
+
+                    DELIVERY DETAILS
+
+                </div>
+
+
+                <p
+                        th:if="${order.courierName != null}">
+
+                    <b>
+                        Courier :
+                    </b>
+
+                    <span
+                            th:text="${order.courierName}">
+                    </span>
+
+                </p>
+
+
+                <p
+                        th:if="${order.trackingNumber != null}">
+
+                    <b>
+                        Tracking Number :
+                    </b>
+
+                    <span
+                            th:text="${order.trackingNumber}">
+                    </span>
+
+                </p>
+
+
+                <p>
+
+                    <b>
+                        Order Status :
+                    </b>
+
+
+                    <span
+                            class="status"
+
+                            th:classappend="
+
+                            ${order.status == 'Pending'}
+                            ? ' status-pending' :
+
+                            ${order.status == 'Confirmed'}
+                            ? ' status-confirmed' :
+
+                            ${order.status == 'Packed'}
+                            ? ' status-packed' :
+
+                            ${order.status == 'Shipped'}
+                            ? ' status-shipped' :
+
+                            ${order.status == 'Delivered'}
+                            ? ' status-delivered' :
+
+                            ' status-cancelled'"
+
+                            th:text="${order.status}">
+
+                    </span>
+
+                </p>
+
+
+                <p
+                        th:if="${order.expectedDeliveryDate != null}">
+
+                    <b>
+                        Expected Delivery :
+                    </b>
+
+                    <span
+                            th:text="${order.expectedDeliveryDate}">
+                    </span>
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             THANK YOU / SIGNATURE
+             ================================================= -->
+
+        <div class="bottom-section">
+
+
+            <div class="thank-you">
+
+
+                <h4>
+
+                    THANK YOU FOR CHOOSING
+
+                </h4>
+
+
+                <div class="brand">
+
+                    SRIG ESSENSE
+
+                </div>
+
+
+                <div class="own-style">
+
+                    OWN YOUR STYLE
+
+                </div>
+
+
+                <div class="support">
+
+                    For any queries or support:
+
+                    <br>
+
+                    <strong>
+                        support@srigessense.com
+                    </strong>
+
+                    <br>
+
+                    +91 9392694740
+
+                    <br>
+
+                    Kalyandurg, Ananthapur,
+                    Andhra Pradesh - 515761
+
+                </div>
+
+            </div>
+
+
+            <div class="signature-section">
+
+
+                <div class="signature-title">
+
+                    AUTHORIZED SIGNATURE
+
+                </div>
+
+
+                <img
+                        src="/images/signature.jpeg"
+                        class="signature-image"
+                        alt="Authorized Signature">
+
+
+                <div class="signature-name">
+
+                    SRIG ESSENSE
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+        <div class="invoice-footer">
+
+
+            <div class="footer-brand">
+
+                SRIG ESSENSE
+
+            </div>
+
+
+            <div>
+
+                OWN YOUR STYLE
+
+            </div>
+
+
+            <div>
+
+                This is a computer-generated invoice.
+
+            </div>
+
+
+            <div>
+
+                support@srigessense.com
+
+                |
+
+                +91 9392694740
+
+            </div>
+
+        </div>
+
 
     </div>
 
 </div>
+
+
+<!-- =========================================================
+     BUTTONS
+     ========================================================= -->
+
+<div class="action-buttons">
+
+
+    <button
+            class="btn btn-dark"
+            onclick="window.print()">
+
+        <i class="fa-solid fa-print"></i>
+
+        Print Invoice
+
+    </button>
+
+
+    <a
+            th:href="@{/invoice/pdf/{id}(id=${order.id})}"
+            class="btn btn-danger">
+
+        <i class="fa-solid fa-file-pdf"></i>
+
+        Download PDF
+
+    </a>
+
+
+    <a
+            href="/my-orders"
+            class="btn btn-secondary">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Orders
+
+    </a>
+
+</div>
+
 
 </body>
 

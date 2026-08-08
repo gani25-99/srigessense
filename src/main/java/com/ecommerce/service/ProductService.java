@@ -14,53 +14,141 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    // Get all products
+    // ==========================
+    // GET ALL PRODUCTS
+    // ==========================
+
     public List<Product> getAllProducts() {
+
         return productRepository.findAll();
+
     }
+
+    // ==========================
+    // GET PRODUCT BY ID
+    // ==========================
 
     public Product getProduct(Long id) {
+
         return productRepository.findById(id).orElse(null);
+
     }
+
+    // ==========================
+    // SAVE PRODUCT
+    // ==========================
 
     public Product save(Product product) {
+
         return productRepository.save(product);
+
     }
 
-    public Product update(Long id, Product product) {
+    // ==========================
+    // UPDATE PRODUCT
+    // ==========================
 
-        Product existing = productRepository.findById(id).orElse(null);
+public Product update(Long id, Product product) {
 
-        if (existing != null) {
-            existing.setName(product.getName());
-            existing.setDescription(product.getDescription());
-            existing.setPrice(product.getPrice());
-            existing.setQuantity(product.getQuantity());
-            existing.setImage(product.getImage());
-            existing.setCategory(product.getCategory());
+    Product existing = productRepository.findById(id).orElse(null);
 
-            return productRepository.save(existing);
-        }
-
+    if (existing == null) {
         return null;
     }
 
-    // Permanent Delete
+    existing.setName(product.getName());
+    existing.setDescription(product.getDescription());
+    existing.setPrice(product.getPrice());
+    existing.setQuantity(product.getQuantity());
+
+    // Keep the old image if no new image is provided
+    if (product.getImage() != null && !product.getImage().isBlank()) {
+        existing.setImage(product.getImage());
+    }
+
+    existing.setCategory(product.getCategory());
+    existing.setSubCategory(product.getSubCategory());
+
+    return productRepository.save(existing);
+}
+    // ==========================
+    // DELETE PRODUCT
+    // ==========================
+
     public void delete(Long id) {
+
         productRepository.deleteById(id);
+
     }
 
-    // Search
+    // ==========================
+    // SEARCH PRODUCTS
+    // ==========================
+
     public List<Product> searchProducts(String keyword) {
-        return productRepository.findByNameContainingIgnoreCase(keyword);
-    }
 
-    // Category
-    public List<Product> getProductsByCategory(Long categoryId) {
-        return productRepository.findByCategoryId(categoryId);
+        return productRepository.findByNameContainingIgnoreCase(keyword);
+
     }
 
     public List<Product> search(String keyword) {
+
         return searchProducts(keyword);
+
     }
+
+    // ==========================
+    // PRODUCTS BY CATEGORY
+    // ==========================
+
+    public List<Product> getProductsByCategory(Long categoryId) {
+
+        return productRepository.findByCategoryId(categoryId);
+
+    }
+
+    // ==========================
+    // PRODUCTS BY SUB CATEGORY
+    // ==========================
+
+    public List<Product> getProductsBySubCategory(Long subCategoryId) {
+
+        return productRepository.findBySubCategoryId(subCategoryId);
+
+    }
+
+    // ==========================
+    // TOTAL PRODUCTS
+    // ==========================
+
+    public long countProducts() {
+
+        return productRepository.count();
+
+    }
+
+    // ==========================
+    // LOW STOCK PRODUCTS
+    // ==========================
+
+    public List<Product> getLowStockProducts() {
+
+        return productRepository
+                .findTop5ByQuantityLessThanEqualOrderByQuantityAsc(5);
+
+    }
+
+    // ==========================
+    // TOP SELLING PRODUCTS
+    // ==========================
+
+    public List<Product> getTopSellingProducts() {
+
+        return productRepository.findAll()
+                .stream()
+                .limit(5)
+                .toList();
+
+    }
+
 }

@@ -18,6 +18,8 @@ public class Product {
 
     private String name;
 
+    private String brand;
+
     private String description;
 
     private Double price;
@@ -26,24 +28,61 @@ public class Product {
 
     private String image;
 
+    // ==========================
+    // BEST SELLER
+    // ==========================
+
+    private Boolean bestSeller = false;
+
+    // ==========================
+    // CATEGORY
+    // ==========================
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
+    // ==========================
+    // SUB CATEGORY
+    // ==========================
+
+    @ManyToOne
+    @JoinColumn(name = "subcategory_id")
+    private SubCategory subCategory;
+
+    // ==========================
+    // CONSTRUCTORS
+    // ==========================
+
     public Product() {
     }
 
-    public Product(Long id, String name, String description,
-                   Double price, Integer quantity,
-                   String image, Category category) {
+    public Product(Long id,
+                   String name,
+                   String brand,
+                   String description,
+                   Double price,
+                   Integer quantity,
+                   String image,
+                   Boolean bestSeller,
+                   Category category,
+                   SubCategory subCategory) {
+
         this.id = id;
         this.name = name;
+        this.brand = brand;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
         this.image = image;
+        this.bestSeller = bestSeller;
         this.category = category;
+        this.subCategory = subCategory;
     }
+
+    // ==========================
+    // GETTERS & SETTERS
+    // ==========================
 
     public Long getId() {
         return id;
@@ -59,6 +98,14 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public String getDescription() {
@@ -93,6 +140,14 @@ public class Product {
         this.image = image;
     }
 
+    public Boolean getBestSeller() {
+        return bestSeller;
+    }
+
+    public void setBestSeller(Boolean bestSeller) {
+        this.bestSeller = bestSeller;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -100,4 +155,13 @@ public class Product {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public SubCategory getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(SubCategory subCategory) {
+        this.subCategory = subCategory;
+    }
+
 }

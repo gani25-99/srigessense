@@ -13,17 +13,33 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // ==========================
+    // USER
+    // ==========================
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // ==========================
+    // CUSTOMER DETAILS
+    // ==========================
+
     private String customerName;
 
     private String mobile;
 
-    private String email;      // NEW
+    private String email;
 
     private String address;
 
     private String city;
 
     private String pincode;
+
+    // ==========================
+    // ORDER DETAILS
+    // ==========================
 
     private Double totalAmount;
 
@@ -43,11 +59,19 @@ public class Orders {
 
     private LocalDate expectedDeliveryDate;
 
+    // ==========================
+    // SHIPPING
+    // ==========================
+
     @Column(length = 100)
     private String courierName;
 
     @Column(length = 100)
     private String trackingNumber;
+
+    // ==========================
+    // PAYMENT
+    // ==========================
 
     @Column(length = 20)
     private String paymentMethod;
@@ -58,8 +82,16 @@ public class Orders {
     @Column(length = 100)
     private String transactionId;
 
+    // ==========================
+    // CONSTRUCTOR
+    // ==========================
+
     public Orders() {
     }
+
+    // ==========================
+    // GETTERS & SETTERS
+    // ==========================
 
     public Long getId() {
         return id;
@@ -67,6 +99,14 @@ public class Orders {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getCustomerName() {
@@ -85,12 +125,10 @@ public class Orders {
         this.mobile = mobile;
     }
 
-    // NEW
     public String getEmail() {
         return email;
     }
 
-    // NEW
     public void setEmail(String email) {
         this.email = email;
     }
@@ -230,4 +268,5 @@ public class Orders {
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
+
 }

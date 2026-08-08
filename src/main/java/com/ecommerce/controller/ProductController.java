@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ecommerce.entity.Category;
 import com.ecommerce.entity.Product;
+import com.ecommerce.entity.SubCategory;
 import com.ecommerce.service.FileUploadService;
 import com.ecommerce.service.ProductService;
 
@@ -31,60 +32,112 @@ public class ProductController {
     @Autowired
     private FileUploadService fileUploadService;
 
-    // Get All Products
+    // ==========================
+    // GET ALL PRODUCTS
+    // ==========================
+
     @GetMapping
     public List<Product> getAllProducts() {
+
         return productService.getAllProducts();
+
     }
 
-    // Get Product By ID
+    // ==========================
+    // GET PRODUCT BY ID
+    // ==========================
+
     @GetMapping("/{id}")
     public Product getProduct(@PathVariable Long id) {
+
         return productService.getProduct(id);
+
     }
 
-    // Save Product (JSON)
+    // ==========================
+    // SAVE PRODUCT (JSON)
+    // ==========================
+
     @PostMapping
     public Product save(@RequestBody Product product) {
+
         return productService.save(product);
+
     }
 
-    // Upload Product With Image
+    // ==========================
+    // UPLOAD PRODUCT
+    // ==========================
+
     @PostMapping("/upload")
     public Product uploadProduct(
-            @RequestParam("name") String name,
-            @RequestParam("description") String description,
-            @RequestParam("price") Double price,
-            @RequestParam("quantity") Integer quantity,
-            @RequestParam("categoryId") Long categoryId,
-            @RequestParam("image") MultipartFile image
-    ) throws Exception {
 
-        String fileName = fileUploadService.uploadFile(image);
+            @RequestParam("name") String name,
+
+            @RequestParam("description") String description,
+
+            @RequestParam("price") Double price,
+
+            @RequestParam("quantity") Integer quantity,
+
+            @RequestParam("categoryId") Long categoryId,
+
+            @RequestParam("subcategoryId") Long subCategoryId,
+
+            @RequestParam("image") MultipartFile image)
+
+            throws Exception {
+
+        String fileName =
+                fileUploadService.uploadFile(image);
 
         Category category = new Category();
+
         category.setId(categoryId);
 
+        SubCategory subCategory = new SubCategory();
+
+        subCategory.setId(subCategoryId);
+
         Product product = new Product();
+
         product.setName(name);
+
         product.setDescription(description);
+
         product.setPrice(price);
+
         product.setQuantity(quantity);
+
         product.setImage(fileName);
+
         product.setCategory(category);
 
+        product.setSubCategory(subCategory);
+
         return productService.save(product);
+
     }
 
-    // Update Product
+    // ==========================
+    // UPDATE PRODUCT
+    // ==========================
+
     @PutMapping("/{id}")
-    public Product update(@PathVariable Long id,
-                          @RequestBody Product product) {
+    public Product update(
+
+            @PathVariable Long id,
+
+            @RequestBody Product product) {
 
         return productService.update(id, product);
+
     }
 
-    // Delete Product
+    // ==========================
+    // DELETE PRODUCT
+    // ==========================
+
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id) {
 
@@ -94,20 +147,30 @@ public class ProductController {
 
             return "Product Deleted Successfully";
 
-        } catch (Exception e) {
+        }
+
+        catch (Exception e) {
 
             throw new ResponseStatusException(
+
                     HttpStatus.BAD_REQUEST,
+
                     "Cannot delete product. Remove it from Cart, Wishlist and Orders first."
+
             );
 
         }
 
     }
 
-    // Search Products
+    // ==========================
+    // SEARCH PRODUCTS
+    // ==========================
+
     @GetMapping("/search")
-    public List<Product> search(@RequestParam String keyword) {
+    public List<Product> search(
+
+            @RequestParam String keyword) {
 
         return productService.search(keyword);
 

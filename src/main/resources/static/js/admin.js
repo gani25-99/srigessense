@@ -1,32 +1,103 @@
 const form = document.getElementById("productForm");
 
 // =======================
-// Load Categories
+// LOAD CATEGORIES
 // =======================
 
 async function loadCategories() {
 
-    const response = await fetch("/api/category");
-    const categories = await response.json();
+    try {
 
-    let options = '<option value="">Select Category</option>';
+        const response = await fetch("/api/category");
 
-    categories.forEach(category => {
+        const categories = await response.json();
 
-        options += `
-            <option value="${category.id}">
-                ${category.name}
-            </option>
-        `;
+        const categorySelect = document.getElementById("categoryId");
 
-    });
+        categorySelect.innerHTML =
+            '<option value="">Select Category</option>';
 
-    document.getElementById("categoryId").innerHTML = options;
+        categories.forEach(category => {
+
+            categorySelect.innerHTML += `
+                <option value="${category.id}">
+                    ${category.name}
+                </option>
+            `;
+
+        });
+
+    }
+
+    catch (e) {
+
+        console.log(e);
+
+        alert("Unable to load categories");
+
+    }
 
 }
 
 // =======================
-// Display Products
+// LOAD SUB CATEGORIES
+// =======================
+
+// =======================
+// LOAD SUB CATEGORIES
+// =======================
+
+async function loadSubCategories(categoryId) {
+
+    console.log("Selected Category ID:", categoryId);
+
+    const subSelect = document.getElementById("subcategoryId");
+
+    subSelect.innerHTML =
+        '<option value="">Select Sub Category</option>';
+
+    if (!categoryId) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch("/api/subcategory/category/" + categoryId);
+
+        console.log("Response Status:", response.status);
+
+        if (!response.ok) {
+            throw new Error("API Error");
+        }
+
+        const subCategories = await response.json();
+
+        console.log("Sub Categories:", subCategories);
+
+        subCategories.forEach(sub => {
+
+            subSelect.innerHTML += `
+                <option value="${sub.id}">
+                    ${sub.name}
+                </option>
+            `;
+
+        });
+
+    }
+
+    catch (e) {
+
+        console.error(e);
+
+        alert("Unable to load sub categories");
+
+    }
+
+}
+
+// =======================
+// DISPLAY PRODUCTS
 // =======================
 
 function displayProducts(products) {
@@ -42,7 +113,7 @@ function displayProducts(products) {
             <div class="card shadow h-100">
 
                 <img
-                    src="/images/products/${product.image}"
+                    src="/products/${product.image}"
                     class="card-img-top"
                     style="height:220px;object-fit:cover;"
                     onerror="this.src='/images/logo3.png'">
@@ -54,17 +125,35 @@ function displayProducts(products) {
                     <p>${product.description}</p>
 
                     <h6 class="text-success">
+
                         ₹ ${product.price}
+
                     </h6>
 
                     <p>
-                        <strong>Category:</strong>
+
+                        <strong>Category :</strong>
+
                         ${product.category.name}
+
                     </p>
 
                     <p>
-                        <strong>Stock:</strong>
+
+                        <strong>Sub Category :</strong>
+
+                        ${product.subCategory
+                            ? product.subCategory.name
+                            : "-"}
+
+                    </p>
+
+                    <p>
+
+                        <strong>Stock :</strong>
+
                         ${product.quantity}
+
                     </p>
 
                     <div class="mt-3">
@@ -100,22 +189,32 @@ function displayProducts(products) {
     document.getElementById("products").innerHTML = html;
 
 }
-
 // =======================
-// Load Products
+// LOAD PRODUCTS
 // =======================
 
 async function loadProducts() {
 
-    const response = await fetch("/api/product");
-    const products = await response.json();
+    try {
 
-    displayProducts(products);
+        const response = await fetch("/api/product");
+
+        const products = await response.json();
+
+        displayProducts(products);
+
+    }
+
+    catch (e) {
+
+        console.log(e);
+
+    }
 
 }
 
 // =======================
-// Save / Update Product
+// SAVE / UPDATE PRODUCT
 // =======================
 
 form.addEventListener("submit", async function (e) {
@@ -124,69 +223,119 @@ form.addEventListener("submit", async function (e) {
 
     const id = document.getElementById("productId").value;
 
+    // =======================
+    // SAVE
+    // =======================
+
     if (id === "") {
 
-        const data = new FormData(form);
+        const formData = new FormData(form);
 
-        const response = await fetch("/api/product/upload", {
+        try {
 
-            method: "POST",
-            body: data
+            const response = await fetch("/api/product/upload", {
 
-        });
+                method: "POST",
 
-        const message = await response.text();
+                body: formData
 
-        if (!response.ok) {
+            });
 
-            alert("Save Failed\n\n" + message);
+            const message = await response.text();
+
+            if (!response.ok) {
+
+                alert(message);
+
+                return;
+
+            }
+
+            alert("Product Saved Successfully");
+
+        }
+
+        catch (e) {
+
+            console.log(e);
+
+            alert("Save Failed");
+
             return;
 
         }
 
-        alert("Product Saved Successfully");
+    }
 
-    } else {
+    // =======================
+    // UPDATE
+    // =======================
+
+    else {
 
         const product = {
 
             name: form.name.value,
+
             description: form.description.value,
+
             price: Number(form.price.value),
+
             quantity: Number(form.quantity.value),
 
             category: {
 
                 id: Number(form.categoryId.value)
 
+            },
+
+            subCategory: {
+
+                id: Number(form.subcategoryId.value)
+
             }
 
         };
 
-        const response = await fetch("/api/product/" + id, {
+        try {
 
-            method: "PUT",
+            const response = await fetch("/api/product/" + id, {
 
-            headers: {
+                method: "PUT",
 
-                "Content-Type": "application/json"
+                headers: {
 
-            },
+                    "Content-Type": "application/json"
 
-            body: JSON.stringify(product)
+                },
 
-        });
+                body: JSON.stringify(product)
 
-        const message = await response.text();
+            });
 
-        if (!response.ok) {
+            const message = await response.text();
 
-            alert("Update Failed\n\n" + message);
-            return;
+            if (!response.ok) {
+
+                alert(message);
+
+                return;
+
+            }
+
+            alert("Product Updated Successfully");
 
         }
 
-        alert("Product Updated Successfully");
+        catch (e) {
+
+            console.log(e);
+
+            alert("Update Failed");
+
+            return;
+
+        }
 
     }
 
@@ -194,18 +343,23 @@ form.addEventListener("submit", async function (e) {
 
     document.getElementById("productId").value = "";
 
+    document.getElementById("subcategoryId").innerHTML =
+        '<option value="">Select Sub Category</option>';
+
     loadProducts();
 
 });
 
 // =======================
-// Delete Product
+// DELETE PRODUCT
 // =======================
 
 async function deleteProduct(id) {
 
     if (!confirm("Delete this product?")) {
+
         return;
+
     }
 
     try {
@@ -218,30 +372,32 @@ async function deleteProduct(id) {
 
         const message = await response.text();
 
-        if (response.ok) {
+        if (!response.ok) {
 
             alert(message);
 
-            loadProducts();
-
-        } else {
-
-            alert("Delete Failed\n\n" + message);
+            return;
 
         }
 
-    } catch (e) {
+        alert("Product Deleted Successfully");
 
-        alert("Server Error");
+        loadProducts();
+
+    }
+
+    catch (e) {
 
         console.log(e);
+
+        alert("Delete Failed");
 
     }
 
 }
 
 // =======================
-// Edit Product
+// EDIT PRODUCT
 // =======================
 
 async function editProduct(id) {
@@ -251,11 +407,24 @@ async function editProduct(id) {
     const product = await response.json();
 
     document.getElementById("productId").value = product.id;
+
     form.name.value = product.name;
+
     form.description.value = product.description;
+
     form.price.value = product.price;
+
     form.quantity.value = product.quantity;
+
     form.categoryId.value = product.category.id;
+
+    await loadSubCategories(product.category.id);
+
+    if (product.subCategory != null) {
+
+        form.subcategoryId.value = product.subCategory.id;
+
+    }
 
     window.scrollTo({
 
@@ -266,36 +435,65 @@ async function editProduct(id) {
     });
 
 }
-
 // =======================
-// Search Products
+// SEARCH PRODUCTS
 // =======================
 
 async function searchProducts() {
 
-    const keyword = document.getElementById("search").value;
+    const keyword =
+        document.getElementById("search").value.trim();
 
-    if (keyword.trim() === "") {
+    if (keyword === "") {
 
         loadProducts();
+
         return;
 
     }
 
-    const response = await fetch("/api/product/search?keyword=" + keyword);
+    try {
 
-    const products = await response.json();
+        const response =
+            await fetch("/api/product/search?keyword=" + encodeURIComponent(keyword));
 
-    displayProducts(products);
+        const products =
+            await response.json();
+
+        displayProducts(products);
+
+    }
+
+    catch (e) {
+
+        console.log(e);
+
+    }
 
 }
 
 // =======================
-// Initial Load
+// EVENTS
 // =======================
 
 document.getElementById("search")
         .addEventListener("keyup", searchProducts);
 
-loadCategories();
-loadProducts();
+document.getElementById("categoryId")
+        .addEventListener("change", function () {
+
+            loadSubCategories(this.value);
+
+        });
+
+// =======================
+// INITIAL LOAD
+// =======================
+
+window.onload = async function () {
+
+    await loadCategories();
+
+    await loadProducts();
+
+};

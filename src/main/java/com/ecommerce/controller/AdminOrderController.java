@@ -1,5 +1,9 @@
 package com.ecommerce.controller;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,53 +12,199 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ecommerce.entity.OrderItem;
 import com.ecommerce.entity.Orders;
-import com.ecommerce.repository.OrderRepository;
-import com.ecommerce.service.OrderService;
+import com.ecommerce.repository.OrderItemRepository;
+import com.ecommerce.repository.OrdersRepository;
 
 @Controller
 public class AdminOrderController {
 
     @Autowired
-    private OrderService orderService;
+    private OrdersRepository ordersRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private OrderItemRepository orderItemRepository;
+
+    // ==========================
+    // ALL ORDERS
+    // ==========================
 
     @GetMapping("/admin/orders")
     public String orders(Model model) {
 
-        model.addAttribute("orders", orderService.getAllOrders());
+        List<Orders> orders =
+                ordersRepository.findAllByOrderByPlacedAtDesc();
+
+        model.addAttribute("orders", orders);
 
         return "admin-orders";
+
     }
 
-    @PostMapping("/admin/orders/update")
-    public String updateStatus(
-            @RequestParam Long id,
+    // ==========================
+    // ORDER DETAILS
+    // ==========================
+
+    @GetMapping("/admin/orders/{id}")
+    public String orderDetails(
+
+            @PathVariable Long id,
+
+            Model model) {
+
+        Optional<Orders> optionalOrder =
+                ordersRepository.findById(id);
+
+        if (optionalOrder.isEmpty()) {
+
+            return "redirect:/admin/orders";
+
+        }
+
+        Orders order =
+                optionalOrder.get();
+
+        List<OrderItem> items =
+                orderItemRepository.findByOrder(order);
+
+        model.addAttribute("order", order);
+
+        model.addAttribute("items", items);
+
+        return "admin-order-details";
+
+    }
+
+    // ==========================
+    // EDIT ORDER
+    // ==========================
+
+    @GetMapping("/admin/orders/edit/{id}")
+    public String editOrder(
+
+            @PathVariable Long id,
+
+            Model model) {
+
+        Optional<Orders> optionalOrder =
+                ordersRepository.findById(id);
+
+        if (optionalOrder.isEmpty()) {
+
+            return "redirect:/admin/orders";
+
+        }
+
+        Orders order =
+                optionalOrder.get();
+
+        List<OrderItem> items =
+                orderItemRepository.findByOrder(order);
+
+        model.addAttribute("order", order);
+
+        model.addAttribute("items", items);
+
+        return "admin-order-details";
+
+    }
+        // ==========================
+    // UPDATE ORDER
+    // ==========================
+
+    @PostMapping("/admin/orders/update/{id}")
+    public String updateOrder(
+
+            @PathVariable Long id,
+
             @RequestParam String status,
-            @RequestParam(required = false) String courierName,
-            @RequestParam(required = false) String trackingNumber) {
 
-        // Update Order Status
-        orderService.updateStatus(id, status);
+            @RequestParam String paymentStatus,
 
-        // Save Courier Details
-        orderService.updateCourierDetails(id, courierName, trackingNumber);
+            @RequestParam(required = false)
+            String courierName,
 
-        return "redirect:/admin/orders";
-    }
+            @RequestParam(required = false)
+            String trackingNumber) {
 
-    @GetMapping("/admin/payment/{id}")
-    public String markPayment(@PathVariable Long id) {
+        Optional<Orders> optionalOrder =
+                ordersRepository.findById(id);
 
-        Orders order = orderRepository.findById(id).orElseThrow();
+        if (optionalOrder.isPresent()) {
 
-        order.setPaymentStatus("PAID");
+            Orders order =
+                    optionalOrder.get();
 
-        orderRepository.save(order);
+            // ==========================
+            // ORDER STATUS
+            // ==========================
 
-        return "redirect:/admin/orders";
+            order.setStatus(status);
+
+            if ("Confirmed".equals(status)
+                    && order.getConfirmedAt() == null) {
+
+                order.setConfirmedAt(
+                        LocalDateTime.now());
+
+            }
+
+            if ("Packed".equals(status)
+                    && order.getPackedAt() == null) {
+
+                order.setPackedAt(
+                        LocalDateTime.now());
+
+            }
+
+            if ("Shipped".equals(status)
+                    && order.getShippedAt() == null) {
+
+                order.setShippedAt(
+                        LocalDateTime.now());
+
+            }
+
+            if ("Out For Delivery".equals(status)
+                    && order.getOutForDeliveryAt() == null) {
+
+                order.setOutForDeliveryAt(
+                        LocalDateTime.now());
+
+            }
+
+            if ("Delivered".equals(status)
+                    && order.getDeliveredAt() == null) {
+
+                order.setDeliveredAt(
+                        LocalDateTime.now());
+
+            }
+
+            // ==========================
+            // PAYMENT
+            // ==========================
+
+            order.setPaymentStatus(
+                    paymentStatus);
+
+            // ==========================
+            // SHIPPING
+            // ==========================
+
+            order.setCourierName(
+                    courierName);
+
+            order.setTrackingNumber(
+                    trackingNumber);
+
+            ordersRepository.save(order);
+
+        }
+
+        return "redirect:/admin/orders/" + id;
+
     }
 
 }

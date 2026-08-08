@@ -25,63 +25,114 @@ public class ProfileController {
     @Autowired
     private FileUploadService fileUploadService;
 
-    @GetMapping("/profile")
-    public String profile(HttpSession session, Model model) {
+    // =====================================
+    // MY PROFILE
+    // =====================================
 
-        String mobile = (String) session.getAttribute("mobile");
+    @GetMapping("/profile")
+    public String profile(
+            HttpSession session,
+            Model model) {
+
+        String mobile =
+                (String) session.getAttribute("mobile");
 
         if (mobile == null) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
-        Optional<User> optional = userRepository.findByMobile(mobile);
+        Optional<User> optionalUser =
+                userRepository.findByMobile(mobile);
 
-        if (optional.isEmpty()) {
-            return "redirect:/";
+        if (optionalUser.isEmpty()) {
+
+            session.invalidate();
+
+            return "redirect:/login";
         }
 
-        model.addAttribute("user", optional.get());
+        model.addAttribute(
+                "user",
+                optionalUser.get());
 
         return "profile";
     }
 
-    @PostMapping("/profile")
+    // =====================================
+    // UPDATE PROFILE
+    // =====================================
+
+    @PostMapping("/profile/update")
     public String updateProfile(
 
             @RequestParam String name,
+
             @RequestParam String email,
+
             @RequestParam String address,
-            @RequestParam(value = "image", required = false) MultipartFile image,
+
+            @RequestParam(
+                    value = "image",
+                    required = false)
+            MultipartFile image,
+
             HttpSession session,
+
             Model model) throws Exception {
 
-        String mobile = (String) session.getAttribute("mobile");
+        String mobile =
+                (String) session.getAttribute("mobile");
 
         if (mobile == null) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
-        Optional<User> optional = userRepository.findByMobile(mobile);
+        Optional<User> optionalUser =
+                userRepository.findByMobile(mobile);
 
-        if (optional.isPresent()) {
+        if (optionalUser.isEmpty()) {
 
-            User user = optional.get();
+            session.invalidate();
 
-            user.setName(name);
-            user.setEmail(email);
-            user.setAddress(address);
-
-            if (image != null && !image.isEmpty()) {
-
-                String fileName = fileUploadService.uploadProfileImage(image);
-                user.setProfileImage(fileName);
-            }
-
-            userRepository.save(user);
-
-            model.addAttribute("user", user);
-            model.addAttribute("success", "Profile Updated Successfully!");
+            return "redirect:/login";
         }
+
+        User user = optionalUser.get();
+
+        // ==========================
+        // UPDATE PROFILE DETAILS
+        // ==========================
+
+        user.setName(name);
+        user.setEmail(email);
+        user.setAddress(address);
+
+        // ==========================
+        // PROFILE IMAGE
+        // ==========================
+
+        if (image != null && !image.isEmpty()) {
+
+            String fileName =
+                    fileUploadService
+                            .uploadProfileImage(image);
+
+            user.setProfileImage(fileName);
+        }
+
+        // ==========================
+        // SAVE
+        // ==========================
+
+        userRepository.save(user);
+
+        model.addAttribute(
+                "user",
+                user);
+
+        model.addAttribute(
+                "message",
+                "Profile updated successfully.");
 
         return "profile";
     }

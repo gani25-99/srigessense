@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Payment Failed | SRIG ESSENSE</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          rel="stylesheet">
+
+    <style>
+
+        body{
+
+            background:#f5f5f5;
+
+        }
+
+        .failed-card{
+
+            max-width:700px;
+
+            margin:60px auto;
+
+            background:white;
+
+            border-radius:15px;
+
+            padding:40px;
+
+            box-shadow:0 0 20px rgba(0,0,0,.15);
+
+            text-align:center;
+
+        }
+
+        .icon{
+
+            font-size:80px;
+
+            color:#dc3545;
+
+            margin-bottom:20px;
+
+        }
+
+        table{
+
+            margin-top:25px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="failed-card">
+
+<i class="fa-solid fa-circle-xmark icon"></i>
+
+<h2 class="text-danger">
+
+    Payment Failed
+
+</h2>
+
+<p>
+
+    Unfortunately, your payment could not be completed.
+
+</p>
+
+<hr>
+
+<table class="table table-bordered">
+
+    <tr>
+
+        <th>Order ID</th>
+
+        <td>
+
+            #<span th:text="${order.id}"></span>
+
+        </td>
+
+    </tr>
+
+    <tr>
+
+        <th>Customer</th>
+
+        <td th:text="${order.customerName}"></td>
+
+    </tr>
+
+    <tr>
+
+        <th>Payment Method</th>
+
+        <td th:text="${order.paymentMethod}"></td>
+
+    </tr>
+
+    <tr>
+
+        <th>Payment Status</th>
+
+        <td>
+
+            <span class="badge bg-danger"
+                  th:text="${order.paymentStatus}"></span>
+
+        </td>
+
+    </tr>
+
+    <tr>
+
+        <th>Total Amount</th>
+
+        <td>
+
+            ₹ <span th:text="${order.totalAmount}"></span>
+
+        </td>
+
+    </tr>
+
+</table>
+
+<div class="mt-4">
+
+    <a th:href="@{/payment/{id}(id=${order.id})}"
+       class="btn btn-warning me-2">
+
+        <i class="fa-solid fa-rotate-right"></i>
+
+        Retry Payment
+
+    </a>
+
+    <a href="/home"
+       class="btn btn-dark">
+
+        <i class="fa-solid fa-house"></i>
+
+        Continue Shopping
+
+    </a>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

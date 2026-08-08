@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Order Details | SRIG ESSENSE</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      rel="stylesheet">
+
+<link rel="stylesheet"
+      th:href="@{/css/dashboard.css}">
+
+<style>
+
+.info-card{
+
+    border-radius:15px;
+
+    border:none;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.section-title{
+
+    font-weight:bold;
+
+    color:#0d6efd;
+
+    margin-bottom:15px;
+
+}
+
+.status-badge{
+
+    font-size:15px;
+
+    padding:8px 18px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <img src="/images/logo3.png"
+                 class="brand-logo">
+
+            <h2>
+
+                SRIG ESSENSE
+
+            </h2>
+
+        </div>
+
+        <ul class="menu">
+
+            <li>
+
+                <a href="/home">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/my-orders"
+                   class="active">
+
+                    <i class="fa-solid fa-box"></i>
+
+                    My Orders
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/wishlist">
+
+                    <i class="fa-solid fa-heart"></i>
+
+                    Wishlist
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/cart">
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    Cart
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- Main -->
+
+    <main class="main-content">
+
+        <div class="welcome-card">
+
+            <h2>
+
+                Order Details
+
+            </h2>
+
+            <p>
+
+                Track and manage your order.
+
+            </p>
+
+        </div>
+
+        <!-- Order Summary -->
+
+        <div class="card info-card mb-4">
+
+            <div class="card-header bg-primary text-white">
+
+                <h5>
+
+                    Order Summary
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <p>
+
+                            <strong>Order ID :</strong>
+
+                            #<span th:text="${order.id}"></span>
+
+                        </p>
+
+                        <p>
+
+                            <strong>Placed On :</strong>
+
+                            <span
+                                    th:text="${#temporals.format(order.placedAt,'dd MMM yyyy hh:mm a')}">
+                            </span>
+
+                        </p>
+
+                        <p>
+
+                            <strong>Total Amount :</strong>
+
+                            ₹ <span th:text="${order.totalAmount}"></span>
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <p>
+
+                            <strong>Payment :</strong>
+
+                            <span th:text="${order.paymentMethod}"></span>
+
+                        </p>
+
+                        <p>
+
+                            <strong>Payment Status :</strong>
+
+                            <span class="badge bg-success"
+                                  th:text="${order.paymentStatus}">
+                            </span>
+
+                        </p>
+
+                        <p>
+
+                            <strong>Order Status :</strong>
+
+                            <span
+
+                                    class="badge status-badge"
+
+                                    th:classappend="
+${order.status=='Pending'} ? 'bg-warning text-dark' :
+${order.status=='Confirmed'} ? 'bg-primary' :
+${order.status=='Packed'} ? 'bg-info text-dark' :
+${order.status=='Shipped'} ? 'bg-secondary' :
+${order.status=='Out For Delivery'} ? 'bg-dark' :
+${order.status=='Delivered'} ? 'bg-success' :
+'bg-danger'"
+
+                                    th:text="${order.status}">
+
+                            </span>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Customer Details -->
+
+        <div class="card info-card mb-4">
+
+            <div class="card-header bg-success text-white">
+
+                <h5>
+
+                    Shipping Address
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <p>
+
+                            <strong>Name :</strong>
+
+                            <span th:text="${order.customerName}"></span>
+
+                        </p>
+
+                        <p>
+
+                            <strong>Email :</strong>
+
+                            <span th:text="${order.email}"></span>
+
+                        </p>
+
+                        <p>
+
+                            <strong>Mobile :</strong>
+
+                            <span th:text="${order.mobile}"></span>
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <p>
+
+                            <strong>Address :</strong>
+
+                            <span th:text="${order.address}"></span>
+
+                        </p>
+
+                        <p>
+
+                            <strong>City :</strong>
+
+                            <span th:text="${order.city}"></span>
+
+                        </p>
+
+                        <p>
+
+                            <strong>Pincode :</strong>
+
+                            <span th:text="${order.pincode}"></span>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+                <!-- Ordered Products -->
+
+        <div class="card info-card mb-4">
+
+            <div class="card-header bg-dark text-white">
+
+                <h5>
+
+                    Ordered Products
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-hover align-middle">
+
+                        <thead class="table-primary">
+
+                        <tr>
+
+                            <th>Image</th>
+
+                            <th>Product</th>
+
+                            <th>Price</th>
+
+                            <th>Quantity</th>
+
+                            <th>Subtotal</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="item : ${items}">
+
+                            <td width="120">
+
+                                <img
+
+                                        th:src="@{'/products/' + ${item.product.image}}"
+
+                                        class="img-fluid rounded"
+
+                                        style="width:90px;height:90px;object-fit:cover;">
+
+                            </td>
+
+                            <td>
+
+                                <h6
+                                        class="mb-1"
+                                        th:text="${item.product.name}">
+                                </h6>
+
+                                <small class="text-muted">
+
+                                    Category :
+
+                                    <span
+                                            th:text="${item.product.category.name}">
+                                    </span>
+
+                                </small>
+
+                            </td>
+
+                            <td>
+
+                                ₹
+
+                                <span
+                                        th:text="${item.price}">
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <span
+                                        class="badge bg-primary fs-6"
+
+                                        th:text="${item.quantity}">
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                ₹
+
+                                <strong>
+
+                                    <span
+                                            th:text="${item.price * item.quantity}">
+                                    </span>
+
+                                </strong>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                        <tfoot>
+
+                        <tr class="table-success">
+
+                            <th colspan="4"
+                                class="text-end">
+
+                                Grand Total
+
+                            </th>
+
+                            <th>
+
+                                ₹
+
+                                <span
+                                        th:text="${order.totalAmount}">
+                                </span>
+
+                            </th>
+
+                        </tr>
+
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+                <!-- ==========================
+             ORDER TRACKING
+        =========================== -->
+
+        <div class="card info-card mb-4">
+
+            <div class="card-header bg-warning">
+
+                <h5>
+
+                    Order Tracking
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row text-center">
+
+                    <div class="col">
+
+                        <i class="fa-solid fa-cart-shopping fa-2x text-warning"></i>
+
+                        <h6 class="mt-2">
+
+                            Pending
+
+                        </h6>
+
+                        <small
+                                th:if="${order.placedAt}"
+                                th:text="${#temporals.format(order.placedAt,'dd MMM yyyy')}">
+                        </small>
+
+                    </div>
+
+                    <div class="col">
+
+                        <i class="fa-solid fa-circle-check fa-2x text-primary"></i>
+
+                        <h6 class="mt-2">
+
+                            Confirmed
+
+                        </h6>
+
+                        <small
+                                th:if="${order.confirmedAt}"
+                                th:text="${#temporals.format(order.confirmedAt,'dd MMM yyyy')}">
+                        </small>
+
+                    </div>
+
+                    <div class="col">
+
+                        <i class="fa-solid fa-box fa-2x text-info"></i>
+
+                        <h6 class="mt-2">
+
+                            Packed
+
+                        </h6>
+
+                        <small
+                                th:if="${order.packedAt}"
+                                th:text="${#temporals.format(order.packedAt,'dd MMM yyyy')}">
+                        </small>
+
+                    </div>
+
+                    <div class="col">
+
+                        <i class="fa-solid fa-truck fa-2x text-secondary"></i>
+
+                        <h6 class="mt-2">
+
+                            Shipped
+
+                        </h6>
+
+                        <small
+                                th:if="${order.shippedAt}"
+                                th:text="${#temporals.format(order.shippedAt,'dd MMM yyyy')}">
+                        </small>
+
+                    </div>
+
+                    <div class="col">
+
+                        <i class="fa-solid fa-truck-fast fa-2x text-dark"></i>
+
+                        <h6 class="mt-2">
+
+                            Out For Delivery
+
+                        </h6>
+
+                        <small
+                                th:if="${order.outForDeliveryAt}"
+                                th:text="${#temporals.format(order.outForDeliveryAt,'dd MMM yyyy')}">
+                        </small>
+
+                    </div>
+
+                    <div class="col">
+
+                        <i class="fa-solid fa-house-circle-check fa-2x text-success"></i>
+
+                        <h6 class="mt-2">
+
+                            Delivered
+
+                        </h6>
+
+                        <small
+                                th:if="${order.deliveredAt}"
+                                th:text="${#temporals.format(order.deliveredAt,'dd MMM yyyy')}">
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ==========================
+             COURIER DETAILS
+        =========================== -->
+
+        <div class="card info-card mb-4">
+
+            <div class="card-header bg-info text-white">
+
+                <h5>
+
+                    Courier Information
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-4">
+
+                        <p>
+
+                            <strong>Courier</strong>
+
+                        </p>
+
+                        <p
+                           th:text="${order.courierName ?: 'Not Assigned'}">
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <p>
+
+                            <strong>Tracking Number</strong>
+
+                        </p>
+
+                        <p
+                           th:text="${order.trackingNumber ?: 'Not Available'}">
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <p>
+
+                            <strong>Expected Delivery</strong>
+
+                        </p>
+
+                        <p
+                           th:if="${order.expectedDeliveryDate}"
+                           th:text="${#temporals.format(order.expectedDeliveryDate,'dd MMM yyyy')}">
+                        </p>
+
+                        <p
+                           th:unless="${order.expectedDeliveryDate}">
+
+                            To Be Updated
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+            
+
+        </div>
+                <!-- ==========================
+             ACTION BUTTONS
+        =========================== -->
+
+        <div class="text-center mb-5">
+
+            <a
+
+                    th:href="@{/invoice/{id}(id=${order.id})}"
+
+                    class="btn btn-success btn-lg">
+
+                <i class="fa-solid fa-file-invoice"></i>
+
+                Download Invoice
+
+            </a>
+
+            <button
+
+                    onclick="window.print()"
+
+                    class="btn btn-primary btn-lg">
+
+                <i class="fa-solid fa-print"></i>
+
+                Print
+
+            </button>
+
+            <a
+
+                    href="/my-orders"
+
+                    class="btn btn-secondary btn-lg">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to My Orders
+
+            </a>
+
+            <a
+
+                    href="/home"
+
+                    class="btn btn-dark btn-lg">
+
+                <i class="fa-solid fa-house"></i>
+
+                Continue Shopping
+
+            </a>
+
+        </div>
+
+        <!-- ==========================
+             THANK YOU
+        =========================== -->
+
+        <div class="card info-card">
+
+            <div class="card-body text-center">
+
+                <h4 class="text-success">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Thank You for Shopping with SRIG ESSENSE
+
+                </h4>
+
+                <p class="text-muted mt-3">
+
+                    We appreciate your purchase.
+
+                    Your order is being processed carefully.
+
+                </p>
+
+                <p class="text-muted">
+
+                    Need help?
+
+                    Contact us anytime.
+
+                </p>
+
+                <h6>
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    support@srigessense.com
+
+                </h6>
+
+                <h6>
+
+                    <i class="fa-solid fa-phone"></i>
+
+                    +91 9392694740
+
+                </h6>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

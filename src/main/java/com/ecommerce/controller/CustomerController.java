@@ -1,43 +1,74 @@
 package com.ecommerce.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ecommerce.service.ProductService;
+import com.ecommerce.entity.User;
+import com.ecommerce.repository.CategoryRepository;
+import com.ecommerce.repository.ProductRepository;
+import com.ecommerce.repository.UserRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class CustomerController {
 
     @Autowired
-    private ProductService productService;
+    private UserRepository userRepository;
 
-    @GetMapping("/home")
-    public String home(Model model) {
+    @Autowired
+    private ProductRepository productRepository;
 
-        model.addAttribute("products", productService.getAllProducts());
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-        return "home";
+    // ==========================
+    // HOME PAGE
+    // ==========================
+
+  // @GetMapping("/home")
+public String home(HttpSession session, Model model) {
+
+    System.out.println("========== CUSTOMER HOME ==========");
+    System.out.println("Session ID     : " + session.getId());
+    System.out.println("Session Mobile : " + session.getAttribute("mobile"));
+
+    String mobile = (String) session.getAttribute("mobile");
+
+    if (mobile == null) {
+
+        System.out.println("Mobile is NULL");
+
+        return "redirect:/login";
+    }
+//
+    Optional<User> optionalUser =
+            userRepository.findByMobile(mobile);
+
+    System.out.println("User Found : " + optionalUser.isPresent());
+
+    if (optionalUser.isEmpty()) {
+
+        System.out.println("User NOT FOUND");
+
+        session.invalidate();
+
+        return "redirect:/login";
     }
 
-    @GetMapping("/search")
-    public String search(@RequestParam String keyword, Model model) {
+    model.addAttribute("user", optionalUser.get());
 
-        model.addAttribute("products",
-                productService.searchProducts(keyword));
+    model.addAttribute("products",
+            productRepository.findAll());
 
-        return "home";
-    }
+    model.addAttribute("categories",
+            categoryRepository.findAll());
 
-    @GetMapping("/category")
-    public String category(@RequestParam Long id, Model model) {
+    System.out.println("Opening Home Page");
 
-        model.addAttribute("products",
-                productService.getProductsByCategory(id));
-
-        return "home";
-    }
-
+    return "home";
+}
 }

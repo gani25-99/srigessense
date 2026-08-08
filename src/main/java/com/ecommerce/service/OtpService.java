@@ -17,56 +17,89 @@ public class OtpService {
     @Autowired
     private TwilioVerifyService twilioVerifyService;
 
+    // =====================================
+    // SEND OTP
+    // =====================================
+
     public String sendOtp(String mobile) {
 
-        return twilioVerifyService.sendOtp(mobile);
+        try {
+
+            twilioVerifyService.sendOtp(mobile);
+
+            return "OTP Sent";
+
+        } catch (Exception e) {
+
+            return e.getMessage();
+
+        }
 
     }
 
-    // Register OTP
-    public String verifyOtp(String name,
-                            String email,
-                            String mobile,
-                            String password,
-                            String otp) {
+    // =====================================
+    // REGISTER OTP VERIFY
+    // =====================================
+
+    public String verifyOtp(
+            String name,
+            String email,
+            String mobile,
+            String password,
+            String otp) {
 
         boolean verified = twilioVerifyService.verifyOtp(mobile, otp);
 
         if (!verified) {
+
             return "Invalid OTP";
         }
 
-        Optional<User> user = userRepository.findByMobile(mobile);
+        Optional<User> existingUser =
+                userRepository.findByMobile(mobile);
 
-        if (user.isPresent()) {
-            return "Success";
+        User user;
+
+        if (existingUser.isPresent()) {
+
+            user = existingUser.get();
+
+        } else {
+
+            user = new User();
+
         }
 
-        User newUser = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setMobile(mobile);
+        user.setPassword(password);
 
-        newUser.setName(name);
-        newUser.setEmail(email);
-        newUser.setMobile(mobile);
-        newUser.setPassword(password);
-
-        userRepository.save(newUser);
+        userRepository.save(user);
 
         return "Success";
     }
 
-    // Login OTP
-    public String verifyLoginOtp(String mobile,
-                                 String otp) {
+    // =====================================
+    // LOGIN OTP VERIFY
+    // =====================================
+
+    public String verifyLoginOtp(
+            String mobile,
+            String otp) {
 
         boolean verified = twilioVerifyService.verifyOtp(mobile, otp);
 
         if (!verified) {
+
             return "Invalid OTP";
         }
 
-        Optional<User> user = userRepository.findByMobile(mobile);
+        Optional<User> user =
+                userRepository.findByMobile(mobile);
 
         if (user.isEmpty()) {
+
             return "User Not Found";
         }
 

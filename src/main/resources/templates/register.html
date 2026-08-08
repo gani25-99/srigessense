@@ -34,8 +34,9 @@
 
         <div class="overlay">
 
-            <img src="/images/logo3.png"
-                 class="brand-logo">
+            <img src="/images/srig-logo.png"
+                 class="brand-logo"
+                 alt="Logo">
 
             <h1>
 
@@ -51,8 +52,8 @@
 
             <p>
 
-                Premium Fashion Collection
-                Crafted For Your Lifestyle.
+                Create your account and
+                start shopping with us.
 
             </p>
 
@@ -68,7 +69,7 @@
 
             <div class="text-center mb-4">
 
-                <img src="/images/logo3.png"
+                <img src="/images/srig-logo.png"
                      class="logo">
 
                 <h2>
@@ -85,86 +86,96 @@
 
             </div>
 
+            <div th:if="${error}"
+                 class="alert alert-danger text-center">
+
+                <span th:text="${error}"></span>
+
+            </div>
+
             <form id="registerForm"
                   action="/register/send-otp"
                   method="post">
+
+                <!-- Full Name -->
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <input
+                            type="text"
+                            name="name"
+                            placeholder="Full Name"
+                            required>
+
+                </div>
+
+                <!-- Email -->
 
                 <div class="input-box">
 
                     <i class="fa-solid fa-envelope"></i>
 
                     <input
-
                             type="email"
-
                             name="email"
-
                             placeholder="Email Address"
-
                             required>
 
                 </div>
+
+                <!-- Mobile -->
 
                 <div class="input-box">
 
                     <i class="fa-solid fa-mobile-screen-button"></i>
 
                     <input
-
                             type="text"
-
                             name="mobile"
-
                             maxlength="10"
-
                             placeholder="Mobile Number"
-
                             required>
 
                 </div>
+                                <!-- Password -->
 
                 <div class="input-box">
 
                     <i class="fa-solid fa-lock"></i>
 
                     <input
-
                             type="password"
-
                             id="password"
-
                             name="password"
-
                             placeholder="Password"
-
                             required>
 
                     <i class="fa-solid fa-eye toggle-password"
-
                        onclick="togglePassword('password',this)"></i>
 
                 </div>
-                                <div class="input-box">
+
+                <!-- Confirm Password -->
+
+                <div class="input-box">
 
                     <i class="fa-solid fa-lock"></i>
 
                     <input
-
                             type="password"
-
                             id="confirmPassword"
-
                             name="confirmPassword"
-
                             placeholder="Confirm Password"
-
                             required>
 
                     <i class="fa-solid fa-eye toggle-password"
-
                        onclick="togglePassword('confirmPassword',this)"></i>
 
                 </div>
+
+                <!-- Password Strength -->
 
                 <div class="strength">
 
@@ -177,6 +188,8 @@
                     Password Strength
 
                 </small>
+
+                <!-- Terms -->
 
                 <div class="terms">
 
@@ -199,9 +212,7 @@
                 </div>
 
                 <button
-
                         type="submit"
-
                         class="primary-btn">
 
                     CREATE ACCOUNT
@@ -209,62 +220,6 @@
                 </button>
 
             </form>
-
-            <div class="divider">
-
-                <span>
-
-                    OR
-
-                </span>
-
-            </div>
-
-            <div class="mobile-title">
-
-                Registration will be verified using
-                your Mobile OTP.
-
-            </div>
-                        <div class="features">
-
-                <div class="feature">
-
-                    <i class="fa-solid fa-shield-halved"></i>
-
-                    <span>
-
-                        Secure Registration
-
-                    </span>
-
-                </div>
-
-                <div class="feature">
-
-                    <i class="fa-solid fa-mobile-screen-button"></i>
-
-                    <span>
-
-                        Mobile OTP Verification
-
-                    </span>
-
-                </div>
-
-                <div class="feature">
-
-                    <i class="fa-solid fa-user-check"></i>
-
-                    <span>
-
-                        Instant Account Access
-
-                    </span>
-
-                </div>
-
-            </div>
 
             <div class="signup-link">
 
@@ -277,44 +232,117 @@
                 </a>
 
             </div>
-
-            <div class="footer-links">
-
-                <a href="/contact">
-
-                    Contact
-
-                </a>
-
-                <span>|</span>
-
-                <a href="#">
-
-                    Privacy Policy
-
-                </a>
-
-                <span>|</span>
-
-                <a href="#">
-
-                    Terms
-
-                </a>
-
-            </div>
-
-            <div class="copyright">
-
-                © 2026 SRIG ESSENSE
-
-            </div>
-
-        </div>
+                    </div>
 
     </div>
 
 </div>
+
+<script>
+
+const password=document.getElementById("password");
+
+const confirmPassword=document.getElementById("confirmPassword");
+
+const strengthBar=document.getElementById("strengthBar");
+
+const strengthText=document.getElementById("strengthText");
+
+password.addEventListener("keyup",function(){
+
+    const value=password.value;
+
+    let strength=0;
+
+    if(value.length>=8) strength++;
+
+    if(/[A-Z]/.test(value)) strength++;
+
+    if(/[0-9]/.test(value)) strength++;
+
+    if(/[^A-Za-z0-9]/.test(value)) strength++;
+
+    switch(strength){
+
+        case 1:
+
+            strengthBar.style.width="25%";
+            strengthBar.style.background="red";
+            strengthText.innerHTML="Weak Password";
+
+            break;
+
+        case 2:
+
+            strengthBar.style.width="50%";
+            strengthBar.style.background="orange";
+            strengthText.innerHTML="Medium Password";
+
+            break;
+
+        case 3:
+
+            strengthBar.style.width="75%";
+            strengthBar.style.background="#0dcaf0";
+            strengthText.innerHTML="Strong Password";
+
+            break;
+
+        case 4:
+
+            strengthBar.style.width="100%";
+            strengthBar.style.background="green";
+            strengthText.innerHTML="Very Strong Password";
+
+            break;
+
+        default:
+
+            strengthBar.style.width="0";
+            strengthText.innerHTML="Password Strength";
+
+    }
+
+});
+
+document.getElementById("registerForm")
+.addEventListener("submit",function(e){
+
+    if(password.value!==confirmPassword.value){
+
+        alert("Passwords do not match.");
+
+        e.preventDefault();
+
+    }
+
+});
+function togglePassword(id,icon){
+
+    const input=document.getElementById(id);
+
+    if(input.type==="password"){
+
+        input.type="text";
+
+        icon.classList.remove("fa-eye");
+
+        icon.classList.add("fa-eye-slash");
+
+    }else{
+
+        input.type="password";
+
+        icon.classList.remove("fa-eye-slash");
+
+        icon.classList.add("fa-eye");
+
+    }
+
+}
+
+</script>
+
 <script th:src="@{/js/auth.js}"></script>
 
 </body>

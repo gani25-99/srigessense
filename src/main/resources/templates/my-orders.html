@@ -3,157 +3,425 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<title>My Orders</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-rel="stylesheet">
+    <title>My Orders | SRIG ESSENSE</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+    <style>
+
+        .order-card{
+
+            border-radius:15px;
+
+            border:none;
+
+            box-shadow:0 4px 15px rgba(0,0,0,.1);
+
+            transition:.3s;
+
+        }
+
+        .order-card:hover{
+
+            transform:translateY(-3px);
+
+        }
+
+        .section-title{
+
+            font-weight:bold;
+
+            color:#555;
+
+            font-size:14px;
+
+        }
+
+        .order-value{
+
+            font-size:16px;
+
+            font-weight:600;
+
+        }
+
+        .btn-sm{
+
+            margin-bottom:6px;
+
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-<div class="container mt-5">
+<div class="dashboard-container">
 
-<h2 class="mb-4">My Orders</h2>
+    <!-- Sidebar -->
 
-<table class="table table-bordered table-hover">
+    <aside class="sidebar">
 
-<thead class="table-dark">
+        <div class="brand">
 
-<tr>
+            <img src="/images/logo3.png"
+                 class="brand-logo">
 
-<th>Order ID</th>
+            <h2>
 
-<th>Customer</th>
+                SRIG ESSENSE
 
-<th>Total</th>
+            </h2>
 
-<th>Status</th>
+        </div>
 
-<th>Payment</th>
+        <ul class="menu">
 
-<th>Payment Status</th>
+            <li>
 
-<th>Invoice</th>
+                <a href="/home">
 
-<th>Track</th>
+                    <i class="fa-solid fa-house"></i>
 
-</tr>
+                    Dashboard
 
-</thead>
+                </a>
 
-<tbody>
+            </li>
 
-<tr th:each="order : ${orders}">
+            <li>
 
-<td th:text="${order.id}"></td>
+                <a href="/profile">
 
-<td th:text="${order.customerName}"></td>
+                    <i class="fa-solid fa-user"></i>
 
-<td>
-₹ <span th:text="${order.totalAmount}"></span>
-</td>
+                    My Profile
 
-<td>
+                </a>
 
-    <span th:if="${order.status=='PLACED'}"
-          class="badge bg-warning text-dark">
-        PLACED
-    </span>
+            </li>
 
-    <span th:if="${order.status=='CONFIRMED'}"
-          class="badge bg-info">
-        CONFIRMED
-    </span>
+            <li>
 
-    <span th:if="${order.status=='PACKED'}"
-          class="badge bg-primary">
-        PACKED
-    </span>
+                <a href="/my-orders"
+                   class="active">
 
-    <span th:if="${order.status=='SHIPPED'}"
-          class="badge bg-secondary">
-        SHIPPED
-    </span>
+                    <i class="fa-solid fa-box"></i>
 
-    <span th:if="${order.status=='OUT FOR DELIVERY'}"
-          class="badge bg-dark">
-        OUT FOR DELIVERY
-    </span>
+                    My Orders
 
-    <span th:if="${order.status=='DELIVERED'}"
-          class="badge bg-success">
-        DELIVERED
-    </span>
+                </a>
 
-    <span th:if="${order.status=='CANCELLED'}"
-          class="badge bg-danger">
-        CANCELLED
-    </span>
+            </li>
 
-</td>
+            <li>
 
-<td th:text="${order.paymentMethod}"></td>
+                <a href="/wishlist">
 
-<td>
+                    <i class="fa-solid fa-heart"></i>
 
-<span
-th:if="${order.paymentStatus=='PAID'}"
-class="badge bg-success">
+                    Wishlist
 
-PAID
+                </a>
 
-</span>
+            </li>
 
-<span
-th:if="${order.paymentStatus=='PENDING'}"
-class="badge bg-warning text-dark">
+            <li>
 
-PENDING
+                <a href="/cart">
 
-</span>
+                    <i class="fa-solid fa-cart-shopping"></i>
 
-<span
-th:if="${order.paymentStatus==null}"
-class="badge bg-secondary">
+                    My Cart
 
-N/A
+                </a>
 
-</span>
+            </li>
 
-</td>
+            <li>
 
-<td>
+                <a href="/change-password">
 
-<a
-th:href="@{'/invoice/' + ${order.id}}"
-class="btn btn-primary btn-sm">
+                    <i class="fa-solid fa-lock"></i>
 
-View Invoice
+                    Change Password
 
-</a>
+                </a>
 
-</td>
+            </li>
 
-<td>
+            <li>
 
-<a
-th:href="@{'/track-order/' + ${order.id}}"
-class="btn btn-success btn-sm">
+                <a href="/logout">
 
-Track Order
+                    <i class="fa-solid fa-right-from-bracket"></i>
 
-</a>
+                    Logout
 
-</td>
+                </a>
 
-</tr>
+            </li>
 
-</tbody>
+        </ul>
 
-</table>
+    </aside>
+
+    <!-- Main Content -->
+
+    <main class="main-content">
+
+        <div class="welcome-card">
+
+            <h2>
+
+                My Orders
+
+            </h2>
+
+            <p>
+
+                View, track and manage your orders.
+
+            </p>
+
+        </div>
+
+        <div th:if="${#lists.isEmpty(orders)}"
+             class="alert alert-info">
+
+            You have not placed any orders yet.
+
+        </div>
+                <div th:each="order : ${orders}"
+             class="card order-card mb-4">
+
+            <div class="card-body">
+
+                <div class="row align-items-center">
+
+                    <!-- Order ID -->
+
+                    <div class="col-md-2">
+
+                        <div class="section-title">
+
+                            Order ID
+
+                        </div>
+
+                        <div class="order-value">
+
+                            #<span th:text="${order.id}"></span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Order Date -->
+
+                    <div class="col-md-2">
+
+                        <div class="section-title">
+
+                            Placed On
+
+                        </div>
+
+                        <div class="order-value"
+                             th:text="${#temporals.format(order.placedAt,'dd-MM-yyyy HH:mm')}">
+
+                        </div>
+
+                    </div>
+
+                    <!-- Amount -->
+
+                    <div class="col-md-2">
+
+                        <div class="section-title">
+
+                            Amount
+
+                        </div>
+
+                        <div class="order-value">
+
+                            ₹ <span th:text="${order.totalAmount}"></span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Payment Method -->
+
+                    <div class="col-md-2">
+
+                        <div class="section-title">
+
+                            Payment
+
+                        </div>
+
+                        <div class="order-value"
+                             th:text="${order.paymentMethod}">
+
+                        </div>
+
+                    </div>
+
+                    <!-- Payment Status -->
+
+                    <div class="col-md-2">
+
+                        <div class="section-title">
+
+                            Payment Status
+
+                        </div>
+
+                        <div>
+
+                            <span class="badge bg-success"
+                                  th:if="${order.paymentStatus=='PAID'}">
+
+                                PAID
+
+                            </span>
+
+                            <span class="badge bg-warning text-dark"
+                                  th:if="${order.paymentStatus=='PENDING'}">
+
+                                PENDING
+
+                            </span>
+
+                            <span class="badge bg-danger"
+                                  th:if="${order.paymentStatus=='FAILED'}">
+
+                                FAILED
+
+                            </span>
+
+                        </div>
+
+                    </div>
+                                        <!-- Order Status -->
+
+                    <div class="col-md-2">
+
+                        <div class="section-title">
+
+                            Order Status
+
+                        </div>
+
+                        <div>
+
+                            <span class="badge bg-warning text-dark"
+                                  th:if="${order.status=='Pending'}"
+                                  th:text="${order.status}">
+                            </span>
+
+                            <span class="badge bg-primary"
+                                  th:if="${order.status=='Confirmed'}"
+                                  th:text="${order.status}">
+                            </span>
+
+                            <span class="badge bg-info text-dark"
+                                  th:if="${order.status=='Packed'}"
+                                  th:text="${order.status}">
+                            </span>
+
+                            <span class="badge bg-secondary"
+                                  th:if="${order.status=='Shipped'}"
+                                  th:text="${order.status}">
+                            </span>
+
+                            <span class="badge bg-dark"
+                                  th:if="${order.status=='Out For Delivery'}"
+                                  th:text="${order.status}">
+                            </span>
+
+                            <span class="badge bg-success"
+                                  th:if="${order.status=='Delivered'}"
+                                  th:text="${order.status}">
+                            </span>
+
+                            <span class="badge bg-danger"
+                                  th:if="${order.status=='Cancelled'}"
+                                  th:text="${order.status}">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <!-- ACTION BUTTONS -->
+
+                <div class="d-flex flex-wrap gap-2 justify-content-end">
+
+                    <a class="btn btn-primary btn-sm"
+                       th:href="@{/order/{id}(id=${order.id})}">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                        View Details
+
+                    </a>
+
+                    <a class="btn btn-success btn-sm"
+                       th:href="@{/invoice/pdf/{id}(id=${order.id})}">
+
+                        <i class="fa-solid fa-file-pdf"></i>
+
+                        Invoice
+
+                    </a>
+
+                    <a class="btn btn-info btn-sm"
+                       th:href="@{/track-order/{id}(id=${order.id})}">
+
+                        <i class="fa-solid fa-truck"></i>
+
+                        Track Order
+
+                    </a>
+
+                    <a class="btn btn-warning btn-sm"
+
+                       th:if="${order.paymentMethod=='ONLINE' and order.paymentStatus=='PENDING'}"
+
+                       th:href="@{/payment/{id}(id=${order.id})}">
+
+                        <i class="fa-solid fa-credit-card"></i>
+
+                        Pay Now
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+            </main>
 
 </div>
 

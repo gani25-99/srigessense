@@ -1,170 +1,184 @@
 package com.ecommerce.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ecommerce.entity.Cart;
-import com.ecommerce.entity.OrderItem;
 import com.ecommerce.entity.Orders;
-import com.ecommerce.entity.Product;
-import com.ecommerce.repository.CartRepository;
-import com.ecommerce.repository.OrderItemRepository;
-import com.ecommerce.repository.OrderRepository;
-import com.ecommerce.repository.ProductRepository;
+import com.ecommerce.repository.OrdersRepository;
 
 @Service
 public class OrderService {
 
     @Autowired
-    private OrderRepository orderRepository;
+    private OrdersRepository ordersRepository;
 
-    @Autowired
-    private CartRepository cartRepository;
+    // ==========================
+    // GET ALL ORDERS
+    // ==========================
 
-    @Autowired
-    private OrderItemRepository orderItemRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    // Place Order
-    public Orders placeOrder(Orders order) {
-
-        List<Cart> cartItems = cartRepository.findAll();
-
-        double total = 0.0;
-
-        // Calculate Total
-        for (Cart item : cartItems) {
-            total += item.getProduct().getPrice() * item.getQuantity();
-        }
-
-        order.setTotalAmount(total);
-
-        // Initial Tracking
-        order.setStatus("PLACED");
-        order.setPlacedAt(LocalDateTime.now());
-        order.setExpectedDeliveryDate(LocalDate.now().plusDays(5));
-
-        // Save Order
-        Orders savedOrder = orderRepository.save(order);
-
-        // Save Order Items & Reduce Stock
-        for (Cart item : cartItems) {
-
-            Product product = productRepository
-                    .findById(item.getProduct().getId())
-                    .orElseThrow(() -> new RuntimeException("Product Not Found"));
-
-            // Check Stock
-            // Check Stock
-if (product.getQuantity() < item.getQuantity()) {
-    throw new RuntimeException(
-            product.getName() + " has only "
-            + product.getQuantity() + " item(s) left.");
-}
-
-// Reduce Stock
-product.setQuantity(product.getQuantity() - item.getQuantity());
-
-productRepository.save(product);
-
-            // Save Order Item
-            OrderItem orderItem = new OrderItem();
-
-            orderItem.setOrder(savedOrder);
-            orderItem.setProduct(product);
-            orderItem.setQuantity(item.getQuantity());
-            orderItem.setPrice(product.getPrice());
-
-            orderItemRepository.save(orderItem);
-        }
-
-        // Clear Cart
-        cartRepository.deleteAll();
-
-        return savedOrder;
-    }
-
-    // Get All Orders
     public List<Orders> getAllOrders() {
-        return orderRepository.findAll();
+
+        return ordersRepository.findAll();
+
     }
 
-    // Get Order By ID
+    // ==========================
+    // GET ORDER BY ID
+    // ==========================
+
     public Orders getOrderById(Long id) {
-        return orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order Not Found"));
+
+        return ordersRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Order Not Found"));
+
     }
 
-    // Update Order Status
+    // ==========================
+    // UPDATE STATUS
+    // ==========================
+
     public void updateStatus(Long id, String status) {
 
         Orders order = getOrderById(id);
 
         order.setStatus(status);
 
+        LocalDateTime now = LocalDateTime.now();
+
         switch (status) {
 
-            case "CONFIRMED":
-                if (order.getConfirmedAt() == null) {
-                    order.setConfirmedAt(LocalDateTime.now());
-                }
+            case "Confirmed":
+                if (order.getConfirmedAt() == null)
+                    order.setConfirmedAt(now);
                 break;
 
-            case "PACKED":
-                if (order.getPackedAt() == null) {
-                    order.setPackedAt(LocalDateTime.now());
-                }
+            case "Packed":
+                if (order.getPackedAt() == null)
+                    order.setPackedAt(now);
                 break;
 
-            case "SHIPPED":
-                if (order.getShippedAt() == null) {
-                    order.setShippedAt(LocalDateTime.now());
-                }
+            case "Shipped":
+                if (order.getShippedAt() == null)
+                    order.setShippedAt(now);
                 break;
 
-            case "OUT FOR DELIVERY":
-                if (order.getOutForDeliveryAt() == null) {
-                    order.setOutForDeliveryAt(LocalDateTime.now());
-                }
+            case "Out For Delivery":
+                if (order.getOutForDeliveryAt() == null)
+                    order.setOutForDeliveryAt(now);
                 break;
 
-            case "DELIVERED":
-                if (order.getDeliveredAt() == null) {
-                    order.setDeliveredAt(LocalDateTime.now());
-                }
+            case "Delivered":
+                if (order.getDeliveredAt() == null)
+                    order.setDeliveredAt(now);
                 break;
 
             default:
                 break;
         }
 
-        orderRepository.save(order);
+        ordersRepository.save(order);
+
     }
 
-    // Update Courier Details
-    public void updateCourierDetails(Long id,
-                                     String courierName,
-                                     String trackingNumber) {
+    // ==========================
+    // UPDATE COURIER
+    // ==========================
+
+    public void updateCourierDetails(
+            Long id,
+            String courierName,
+            String trackingNumber) {
 
         Orders order = getOrderById(id);
 
         order.setCourierName(courierName);
         order.setTrackingNumber(trackingNumber);
 
-        orderRepository.save(order);
+        ordersRepository.save(order);
+
     }
 
-    // Total Revenue
+    // ==========================
+    // TOTAL REVENUE
+    // ==========================
+
     public Double getRevenue() {
 
-        Double revenue = orderRepository.getTotalRevenue();
+        Double revenue = ordersRepository.getTotalRevenue();
 
         return revenue == null ? 0.0 : revenue;
+
     }
+    // ==========================
+// TOTAL ORDERS
+// ==========================
+
+public long countOrders() {
+
+    return ordersRepository.count();
+
+}
+
+// ==========================
+// TOTAL REVENUE
+// ==========================
+
+public java.math.BigDecimal getTotalRevenue() {
+
+    Double revenue = ordersRepository.getTotalRevenue();
+
+    return java.math.BigDecimal.valueOf(revenue == null ? 0.0 : revenue);
+
+}
+
+// ==========================
+// TODAY SALES
+// ==========================
+
+public java.math.BigDecimal getTodaySales(java.time.LocalDate date) {
+
+    Double sales = ordersRepository.getTodaySales(date);
+
+    return java.math.BigDecimal.valueOf(sales == null ? 0.0 : sales);
+
+}
+
+// ==========================
+// MONTHLY SALES
+// ==========================
+
+public java.math.BigDecimal getMonthlySales(int month, int year) {
+
+    Double sales = ordersRepository.getMonthlySales(month, year);
+
+    return java.math.BigDecimal.valueOf(sales == null ? 0.0 : sales);
+
+}
+
+// ==========================
+// YEARLY SALES
+// ==========================
+
+public java.math.BigDecimal getYearlySales(int year) {
+
+    Double sales = ordersRepository.getYearlySales(year);
+
+    return java.math.BigDecimal.valueOf(sales == null ? 0.0 : sales);
+
+}
+
+// ==========================
+// RECENT ORDERS
+// ==========================
+
+public List<Orders> getRecentOrders() {
+
+    return ordersRepository.findTop10ByOrderByPlacedAtDesc();
+
+}
+
 }

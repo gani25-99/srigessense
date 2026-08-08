@@ -1,14 +1,15 @@
 package com.ecommerce.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.entity.Cart;
 import com.ecommerce.entity.Product;
+import com.ecommerce.entity.User;
 import com.ecommerce.repository.CartRepository;
-import com.ecommerce.repository.ProductRepository;
 
 @Service
 public class CartService {
@@ -16,102 +17,122 @@ public class CartService {
     @Autowired
     private CartRepository cartRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
+    // ==========================
+    // GET USER CART
+    // ==========================
 
-    // Add Product To Cart
-    public void addToCart(Long productId) {
+    public List<Cart> getCart(User user) {
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product Not Found"));
+        return cartRepository.findByUser(user);
 
-        // Out of stock
-        if (product.getQuantity() <= 0) {
-            throw new RuntimeException("Product is out of stock");
-        }
+    }
 
-        // Check if product already exists in cart
-        Cart cart = cartRepository.findByProduct(product);
+    // ==========================
+    // ADD TO CART
+    // ==========================
 
-        if (cart != null) {
+   public void add(User user, Product product) {
 
-            // Don't exceed available stock
-            if (cart.getQuantity() >= product.getQuantity()) {
-                throw new RuntimeException("Maximum available stock reached");
-            }
+    Optional<Cart> existing =
+            cartRepository.findByUserAndProduct(user, product);
+
+    if (existing.isPresent()) {
+
+        Cart cart = existing.get();
+
+        if (cart.getQuantity() < product.getQuantity()) {
 
             cart.setQuantity(cart.getQuantity() + 1);
 
-        } else {
+            cartRepository.save(cart);
 
-            cart = new Cart();
-            cart.setProduct(product);
-            cart.setQuantity(1);
         }
 
-        cartRepository.save(cart);
+        return;
     }
 
-    // Get Cart Items
-    public List<Cart> getCartItems() {
-        return cartRepository.findAll();
-    }
+    if (product.getQuantity() > 0) {
 
-    // Delete Cart Item
-    public void remove(Long id) {
-        cartRepository.deleteById(id);
-    }
+        Cart cart = new Cart();
 
-    // Increase Quantity
-    public void increaseQuantity(Long id) {
+        cart.setUser(user);
 
-        Cart cart = cartRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cart Item Not Found"));
+        cart.setProduct(product);
 
-        Product product = cart.getProduct();
-
-        if (cart.getQuantity() >= product.getQuantity()) {
-            throw new RuntimeException("Maximum available stock reached");
-        }
-
-        cart.setQuantity(cart.getQuantity() + 1);
+        cart.setQuantity(1);
 
         cartRepository.save(cart);
+
     }
 
-    // Decrease Quantity
-    public void decreaseQuantity(Long id) {
+}
+    // ==========================
+    // INCREASE QUANTITY
+    // ==========================
 
-        Cart cart = cartRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cart Item Not Found"));
+   public void increase(User user, Product product) {
 
-        if (cart.getQuantity() > 1) {
+    Optional<Cart> existing =
+            cartRepository.findByUserAndProduct(user, product);
 
-            cart.setQuantity(cart.getQuantity() - 1);
+    if (existing.isPresent()) {
+
+        Cart cart = existing.get();
+
+        if (cart.getQuantity() < product.getQuantity()) {
+
+            cart.setQuantity(cart.getQuantity() + 1);
 
             cartRepository.save(cart);
 
-        } else {
-
-            cartRepository.delete(cart);
-
         }
+
     }
 
-    // Calculate Total Price
-    public Double getGrandTotal() {
+}
 
-        Double total = 0.0;
+    // ==========================
+    // DECREASE QUANTITY
+    // ==========================
 
-        List<Cart> cartItems = cartRepository.findAll();
+    public void decrease(User user,
+                         Product product) {
 
-        for (Cart item : cartItems) {
+        Optional<Cart> existing =
+                cartRepository.findByUserAndProduct(user, product);
 
-            total += item.getProduct().getPrice() * item.getQuantity();
+        if (existing.isPresent()) {
+
+            Cart cart = existing.get();
+
+            if (cart.getQuantity() > 1) {
+
+                cart.setQuantity(cart.getQuantity() - 1);
+
+                cartRepository.save(cart);
+
+            } else {
+
+                cartRepository.delete(cart);
+
+            }
 
         }
 
-        return total;
+    }
+
+    // ==========================
+    // REMOVE
+    // ==========================
+
+    public void remove(User user,
+                       Product product) {
+
+        Optional<Cart> existing =
+                cartRepository.findByUserAndProduct(user, product);
+
+        existing.ifPresent(cartRepository::delete);
+
     }
 
 }
